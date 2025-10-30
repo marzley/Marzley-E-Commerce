@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Dashboard - Marzley Shop</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Inter:400,600,700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:linear-gradient(135deg,#e9f0ff 0%,#eef6fb 100%);
+      --card:#ffffff;
+      --brand:#21334a;
+      --accent:#e67e22;
+      --muted:#6b7785;
+      --success:#27ae60;
+      --danger:#e05b5b;
+      --glass:rgba(255,255,255,0.7);
+      --maxWidth:1200px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,Roboto,Arial,sans-serif;background:var(--bg);color:#172033;-webkit-font-smoothing:antialiased}
+    a{color:inherit}
+
+    /* header */
+    header{background:var(--brand);color:#fff;position:sticky;top:0;z-index:1200;box-shadow:0 6px 18px rgba(15,30,45,0.06)}
+    .topbar{max-width:var(--maxWidth);margin:0 auto;padding:.9rem 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .logo{font-weight:800;color:var(--accent);font-size:1.25rem;letter-spacing:.6px}
+    .nav-links{display:flex;gap:14px;list-style:none;margin:0;padding:0;align-items:center}
+    .nav-links a{color:#fff;text-decoration:none;font-weight:600;padding:8px 10px;border-radius:8px;display:inline-flex;gap:8px;align-items:center}
+    .nav-toggle{display:none;background:transparent;border:0;color:#fff;font-size:1.15rem;padding:6px;cursor:pointer}
+
+    @media(max-width:900px){
+      .nav-toggle{display:inline-block}
+      .nav-links{position:absolute;left:12px;right:12px;top:64px;background:var(--brand);flex-direction:column;padding:12px;gap:8px;border-radius:8px;display:none}
+      .nav-links.show{display:flex}
+    }
+
+    /* dashboard */
+    .dashboard-wrap{max-width:var(--maxWidth);margin:2rem auto;padding:1.25rem}
+    .dashboard{background:var(--card);border-radius:12px;box-shadow:0 12px 40px rgba(17,34,50,0.06);overflow:hidden}
+    .dashboard-head{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid #f1f6fb}
+    .dashboard-head h1{margin:0;font-size:1.45rem;color:#12212a}
+    .controls{display:flex;gap:8px;align-items:center}
+
+    .admin-tabs{display:flex;gap:8px;padding:12px 16px;background:linear-gradient(180deg,#fbfdff,#f8fbff)}
+    .admin-tab-btn{padding:.6rem .9rem;background:transparent;border:0;border-radius:8px;cursor:pointer;font-weight:600;color:var(--brand)}
+    .admin-tab-btn.active{background:var(--accent);color:#fff;box-shadow:0 8px 28px rgba(230,126,34,0.14)}
+
+    .panel{padding:16px 20px;display:none}
+    .panel.active{display:block}
+
+    /* forms / tables */
+    .form-inline{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+    .form-inline input, .form-inline select{padding:.55rem .65rem;border-radius:8px;border:1px solid #e7eff8;background:#fff;min-width:0}
+    .form-inline button{background:var(--accent);color:#fff;border:0;padding:.55rem .9rem;border-radius:8px;cursor:pointer;font-weight:700}
+
+    table{width:100%;border-collapse:collapse;background:transparent;margin-top:8px}
+    th,td{padding:.85rem .75rem;border-bottom:1px solid #f3f7fb;text-align:left;font-size:.95rem}
+    th{background:linear-gradient(90deg,var(--accent),#ff9b5a);color:#fff;font-weight:700}
+    .small-img{width:56px;height:40px;object-fit:cover;border-radius:6px}
+
+    .action-btn{background:#334a63;color:#fff;border:0;padding:.45rem .6rem;border-radius:8px;cursor:pointer;font-weight:700}
+    .action-btn.delete{background:var(--danger)}
+    .action-btn.ghost{background:transparent;border:1px solid #e6eef8;color:var(--brand)}
+
+    /* messages & toast */
+    .msg{padding:.6rem .8rem;border-radius:8px;margin-bottom:8px;display:none}
+    .msg.show{display:block}
+    .success{background:#e9fbf0;color:var(--success);border:1px solid rgba(39,174,96,0.08)}
+    .error{background:#fff2f2;color:var(--danger);border:1px solid rgba(224,91,91,0.08)}
+
+    .toast{position:fixed;right:18px;bottom:18px;background:#24313a;color:#fff;padding:12px 16px;border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,0.18);display:none;z-index:2200}
+    .toast.show{display:block;animation:pop .28s ease}
+    @keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+
+    /* responsive */
+    @media(max-width:720px){
+      .form-inline{flex-direction:column}
+      th,td{font-size:.9rem}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="nav-toggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
+        <div class="logo">Marzley Shop</div>
+      </div>
+
+      <ul class="nav-links" role="menu" aria-label="Main navigation">
+        <li><a href="home.html"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="about us.html"><i class="fas fa-info-circle"></i> About</a></li>
+        <li><a href="product.html"><i class="fas fa-box"></i> Products</a></li>
+        <li><a href="add to cart.html"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+        <li><a href="index.php"><i class="fas fa-user"></i> Account</a></li>
+        <li><a href="admin.html" aria-current="page"><i class="fas fa-user-shield"></i> Admin</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="dashboard-wrap">
+    <section class="dashboard" aria-labelledby="dashboardTitle">
+      <div class="dashboard-head">
+        <h1 id="dashboardTitle">Admin Dashboard</h1>
+        <div class="controls">
+          <button id="export-btn" class="action-btn ghost" title="Export data"><i class="fas fa-file-export"></i></button>
+          <button id="clear-store" class="action-btn ghost" title="Clear demo data"><i class="fas fa-trash-alt"></i></button>
+        </div>
+      </div>
+
+      <div class="admin-tabs" role="tablist" aria-label="Admin sections">
+        <button class="admin-tab-btn active" data-target="products-panel">Products</button>
+        <button class="admin-tab-btn" data-target="orders-panel">Orders</button>
+        <button class="admin-tab-btn" data-target="customers-panel">Customers</button>
+        <button class="admin-tab-btn" data-target="inventory-panel">Inventory</button>
+      </div>
+
+      <div id="products-panel" class="panel active">
+        <div id="products-msg" class="msg"></div>
+
+        <form id="add-product-form" class="form-inline" aria-label="Add product">
+          <input id="prod-name" type="text" placeholder="Product Name" required>
+          <input id="prod-price" type="number" placeholder="Price (KES)" required min="0" step="0.01">
+          <input id="prod-stock" type="number" placeholder="Stock" required min="0" step="1">
+          <input id="prod-img" type="url" placeholder="Image URL (optional)">
+          <button type="submit">Add Product</button>
+        </form>
+
+        <table id="products-table" aria-describedby="products-msg" role="table">
+          <thead><tr><th>Name</th><th>Price</th><th>Stock</th><th>Image</th><th style="width:190px">Actions</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div id="orders-panel" class="panel">
+        <div id="orders-msg" class="msg"></div>
+        <table id="orders-table">
+          <thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div id="customers-panel" class="panel">
+        <div id="customers-msg" class="msg"></div>
+        <table id="customers-table">
+          <thead><tr><th>Email</th><th>Username</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div id="inventory-panel" class="panel">
+        <div id="inventory-msg" class="msg"></div>
+        <table id="inventory-table">
+          <thead><tr><th>Product</th><th>Stock</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Site footer">
+    <div style="max-width:var(--maxWidth);margin:0 auto;padding:1.25rem 18px;color:#fff">
+      <div style="font-weight:600">&copy; 2025 Marzley e-commerce. All rights reserved.</div>
+      <div style="margin-top:.75rem;display:inline-flex;gap:.6rem;align-items:center;flex-wrap:wrap">
+        <a href="https://www.facebook.com/" target="_blank" title="Facebook" rel="noopener"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" style="width:22px;height:22px;filter:invert(85%)"></a>
+        <a href="https://x.com/" target="_blank" title="X / Twitter" rel="noopener"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/twitter.svg" alt="Twitter" style="width:22px;height:22px;filter:invert(85%)"></a>
+        <a href="https://www.instagram.com/" target="_blank" title="Instagram" rel="noopener"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" style="width:22px;height:22px;filter:invert(85%)"></a>
+        <a href="https://linkedin.com/" target="_blank" title="LinkedIn" rel="noopener"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn" style="width:22px;height:22px;filter:invert(85%)"></a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    // Nav toggle (mobile)
+    (function(){
+      var toggle = document.querySelector('.nav-toggle');
+      var links = document.querySelector('.nav-links');
+      if (!toggle || !links) return;
+      toggle.addEventListener('click', function(){ links.classList.toggle('show'); });
+      window.addEventListener('resize', function(){ if (window.innerWidth > 900) links.classList.remove('show'); });
+    })();
+
+    // Utilities
+    function read(key){ try { return JSON.parse(localStorage.getItem(key) || '[]') } catch(e){ return [] } }
+    function write(key, data){ localStorage.setItem(key, JSON.stringify(data)) }
+    function showToast(msg, t=2200){ var el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'), t); }
+
+    // Tab switching
+    document.querySelectorAll('.admin-tab-btn').forEach(btn=>{
+      btn.addEventListener('click', function(){
+        document.querySelectorAll('.admin-tab-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+        document.getElementById(btn.dataset.target).classList.add('active');
+      });
+    });
+
+    // PRODUCTS
+    function renderProducts(){
+      var rows = read('admin_products');
+      var tbody = document.querySelector('#products-table tbody');
+      tbody.innerHTML = '';
+      rows.forEach((p, i)=>{
+        var tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${escapeHtml(p.name)}</td>
+          <td>KES ${Number(p.price).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+          <td>${Number(p.stock)}</td>
+          <td><img src="${escapeHtml(p.img||'')}" class="small-img" alt=""></td>
+          <td>
+            <button class="action-btn" data-idx="${i}" data-action="edit"><i class="fas fa-edit"></i> Edit</button>
+            <button class="action-btn delete" data-idx="${i}" data-action="delete"><i class="fas fa-trash"></i> Delete</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+    // add product
+    document.getElementById('add-product-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      var name = document.getElementById('prod-name').value.trim();
+      var price = parseFloat(document.getElementById('prod-price').value) || 0;
+      var stock = parseInt(document.getElementById('prod-stock').value, 10) || 0;
+      var img = document.getElementById('prod-img').value.trim();
+      if (!name){ showMsg('products-msg','Please enter a product name', 'error'); return; }
+      var products = read('admin_products');
+      products.push({ name:name, price:price, stock:stock, img:img });
+      write('admin_products', products);
+      renderProducts();
+      this.reset();
+      showMsg('products-msg','Product added successfully','success');
+      showToast('Product added');
+    });
+
+    // delegate product actions
+    document.querySelector('#products-table tbody').addEventListener('click', function(e){
+      var btn = e.target.closest('button');
+      if (!btn) return;
+      var idx = btn.dataset.idx;
+      var action = btn.dataset.action;
+      if (action === 'delete'){
+        if (!confirm('Delete this product?')) return;
+        var products = read('admin_products'); products.splice(idx,1); write('admin_products', products); renderProducts();
+        showMsg('products-msg','Product deleted','success'); showToast('Deleted');
+      } else if (action === 'edit'){
+        var products = read('admin_products'); var p = products[idx];
+        var name = prompt('Product name', p.name); if (name===null) return;
+        var price = prompt('Price', p.price); if (price===null) return;
+        var stock = prompt('Stock', p.stock); if (stock===null) return;
+        p.name = name.trim(); p.price = parseFloat(price) || p.price; p.stock = parseInt(stock,10) || p.stock;
+        products[idx] = p; write('admin_products', products); renderProducts();
+        showMsg('products-msg','Product updated','success'); showToast('Updated');
+      }
+    });
+
+    // ORDERS (demo data)
+    function renderOrders(){
+      var orders = read('admin_orders');
+      var tbody = document.querySelector('#orders-table tbody'); tbody.innerHTML = '';
+      orders.forEach(o=>{
+        var tr = document.createElement('tr');
+        tr.innerHTML = `<td>${escapeHtml(o.id)}</td><td>${escapeHtml(o.customer)}</td><td>${escapeHtml(o.items)}</td><td>KES ${Number(o.total).toLocaleString()}</td><td>${escapeHtml(o.status)}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // CUSTOMERS
+    function renderCustomers(){
+      var users = read('users');
+      var tbody = document.querySelector('#customers-table tbody'); tbody.innerHTML = '';
+      users.forEach(u=>{
+        var tr=document.createElement('tr'); tr.innerHTML = `<td>${escapeHtml(u.email)}</td><td>${escapeHtml(u.username)}</td>`; tbody.appendChild(tr);
+      });
+    }
+
+    // INVENTORY
+    function renderInventory(){
+      var products = read('admin_products');
+      var tbody = document.querySelector('#inventory-table tbody'); tbody.innerHTML = '';
+      products.forEach(p=>{ var tr=document.createElement('tr'); tr.innerHTML = `<td>${escapeHtml(p.name)}</td><td>${Number(p.stock)}</td>`; tbody.appendChild(tr); });
+    }
+
+    // messages
+    function showMsg(id, text, type){
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = text;
+      el.className = 'msg show ' + (type==='success' ? 'success' : 'error');
+      clearTimeout(el._t);
+      el._t = setTimeout(()=>{ el.className = 'msg'; }, 3200);
+    }
+
+    // demo utilities
+    document.getElementById('clear-store').addEventListener('click', function(){
+      if (!confirm('Clear demo localStorage data?')) return;
+      ['admin_products','admin_orders','users','cart'].forEach(k=>localStorage.removeItem(k));
+      renderAll();
+      showToast('Demo data cleared');
+    });
+
+    document.getElementById('export-btn').addEventListener('click', function(){
+      var payload = {
+        products: read('admin_products'),
+        orders: read('admin_orders'),
+        users: read('users')
+      };
+      var blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a'); a.href = url; a.download = 'mt-kenya-admin-export.json'; a.click(); URL.revokeObjectURL(url);
+      showToast('Export prepared');
+    });
+
+    // initial demo data if empty
+    (function ensureDemo(){
+      if (!read('admin_products').length){
+        write('admin_products', [
+          {name:'Organic Coffee Beans', price:515.99, stock:20, img:'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80'},
+          {name:'Handmade Basket', price:1124.99, stock:10, img:'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80'}
+        ]);
+      }
+      if (!read('admin_orders').length){
+        write('admin_orders',[{id:'ORD-001',customer:'kelvin@marzleytech.com',items:'Coffee x2',total:1031.98,status:'Pending'}]);
+      }
+      if (!read('users').length){
+        write('users',[{email:'kelvin@marzleytech.com',username:'marzley'}]);
+      }
+    })();
+
+    // render everything
+    function renderAll(){ renderProducts(); renderOrders(); renderCustomers(); renderInventory(); }
+    renderAll();
+
+    // accessibility: Esc closes mobile nav
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape') document.querySelectorAll('.nav-links').forEach(n=>n.classList.remove('show')); });
+
+  </script>
+</body>
+</html>

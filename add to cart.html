@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopping Cart - Marzley Shop</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root{
+            --bg-1:#051021;
+            --bg-2:#0f2433;
+            --panel:rgba(255,255,255,0.03);
+            --muted:#9fb0bf;
+            --accent:#00d1ff;
+            --accent-2:#ff7a59;
+            --card-bg:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            --glass:rgba(255,255,255,0.04);
+            --radius:14px;
+            --shadow:0 12px 40px rgba(3,12,20,0.55);
+            --max:1200px;
+        }
+        *{box-sizing:border-box}
+        html,body{height:100%}
+        body{
+            margin:0;font-family:Inter,system-ui,Roboto,Arial,sans-serif;
+            background:
+                radial-gradient(800px 500px at 10% 12%, rgba(0,209,255,0.06), transparent),
+                linear-gradient(135deg,var(--bg-1) 0%, var(--bg-2) 60%);
+            color:#e6f3fb;
+            -webkit-font-smoothing:antialiased;
+        }
+
+        /* header */
+        header{
+            position:sticky;top:0;z-index:1200;
+            backdrop-filter: blur(6px);
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            border-bottom:1px solid rgba(255,255,255,0.03);
+        }
+        nav{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 20px}
+        .logo{display:flex;align-items:center;gap:12px;font-weight:800;color:var(--accent);font-size:1.25rem}
+        .logo .emblem{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;color:#02131a;font-weight:900;box-shadow:0 8px 26px rgba(0,0,0,0.6)}
+
+        .nav-links{display:flex;gap:14px;list-style:none;margin:0;padding:0;align-items:center}
+        .nav-links a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:10px;display:inline-flex;gap:8px;align-items:center;transition:.16s ease}
+        .nav-links a:hover{color:#fff;transform:translateY(-3px);text-shadow:0 8px 30px rgba(0,0,0,0.6)}
+
+        .container{max-width:var(--max);margin:2.75rem auto;padding:0 20px;min-height:60vh}
+
+        /* cart card */
+        .cart-section{
+            background:transparent;border-radius:16px;padding:0;
+            display:block;
+        }
+        .panel-wrap{
+            display:grid;grid-template-columns:1fr 420px;gap:24px;align-items:start;
+        }
+        @media(max-width:980px){ .panel-wrap{grid-template-columns:1fr} }
+
+        .panel{
+            background:var(--card-bg);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);border:1px solid var(--glass);
+        }
+
+        h1{margin:0 0 6px;font-size:1.8rem;color:#eaffff}
+        .subtitle{color:var(--muted);margin-bottom:12px}
+
+        /* cart list */
+        .cart-list{display:grid;gap:12px}
+        .cart-row{
+            display:grid;grid-template-columns:84px 1fr 120px 110px;gap:12px;align-items:center;
+            padding:10px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.0));
+            transition:transform .22s ease, box-shadow .22s ease, opacity .28s ease;
+            border:1px solid rgba(255,255,255,0.03);
+        }
+        .cart-row.enter{animation:cardIn .36s cubic-bezier(.2,.9,.2,1)}
+        @keyframes cardIn{from{opacity:0;transform:translateY(8px) scale(.995)}to{opacity:1;transform:none}}
+        .cart-row.exit{opacity:0;transform:translateX(-14px) scale(.98);transition:all .32s ease}
+
+        .cart-img{width:84px;height:84px;object-fit:cover;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,0.5)}
+        .product-title{font-weight:800;color:#eaffff;margin-bottom:6px}
+        .product-meta{font-size:.92rem;color:var(--muted)}
+
+        .qty-controls{display:flex;align-items:center;gap:8px}
+        .qty-controls button{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:6px 8px;border-radius:8px;cursor:pointer;transition:all .12s}
+        .qty-controls button:hover{color:#fff;border-color:rgba(0,209,255,0.18);transform:translateY(-3px)}
+        .remove-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#ff8787;padding:8px 10px;border-radius:9px;cursor:pointer}
+
+        .empty{
+            display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:40px 16px;color:var(--muted);
+            border-radius:12px;animation:float 5s ease-in-out infinite;
+        }
+        @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}
+
+        /* summary aside */
+        .summary{position:sticky;top:86px;display:flex;flex-direction:column;gap:14px}
+        .summary .mini{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.04)}
+        .summary h2{margin:0;color:var(--accent)}
+        .summary .line{display:flex;justify-content:space-between;align-items:center;color:var(--muted);padding:6px 0;font-weight:700}
+        .grand{font-size:1.4rem;font-weight:900;color:var(--accent);text-align:right}
+
+        .place-btn{
+            display:inline-flex;gap:10px;align-items:center;justify-content:center;background:linear-gradient(90deg,var(--accent),var(--accent-2));
+            color:#02131a;border:none;padding:12px;border-radius:12px;font-weight:900;width:100%;cursor:pointer;box-shadow:0 12px 36px rgba(0,0,0,0.6);
+            transition:transform .18s ease,box-shadow .18s ease;will-change:transform;
+        }
+        .place-btn:hover{transform:translateY(-4px)}
+        .place-btn.busy{opacity:.8;transform:scale(.995)}
+
+        .small{font-size:.92rem;color:var(--muted)}
+
+        /* toast */
+        .toast{position:fixed;right:18px;bottom:18px;background:#0f2433;color:#eaffff;padding:12px 16px;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,0.6);display:none;z-index:2200}
+        .toast.show{display:block;animation:toastIn .32s ease}
+        @keyframes toastIn{from{transform:translateY(6px);opacity:0}to{transform:none;opacity:1}}
+
+        /* responsive */
+        @media(max-width:700px){
+            .cart-row{grid-template-columns:72px 1fr 88px 84px}
+            .summary{position:static}
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo"><div class="emblem">MK</div> Marzley Shop</div>
+            <ul class="nav-links" role="navigation" aria-label="Main navigation">
+                <li><a href="home.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="product.html"><i class="fas fa-box"></i> Products</a></li>
+                <li><a href="about us.html"><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="index.php"><i class="fas fa-user"></i> Account</a></li>
+                <li><a href="admin.html"><i class="fas fa-user-shield"></i> Admin</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="cart-section">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                <div>
+                    <h1>Your Cart</h1>
+                    <div class="subtitle small">Secure checkout · Local payments · Fast delivery</div>
+                </div>
+                <div id="cart-count" class="small">0 items</div>
+            </div>
+
+            <div class="panel-wrap">
+                <section class="panel" aria-labelledby="cartTitle">
+                    <h2 id="cartTitle" style="display:none">Cart items</h2>
+                    <div id="cart-container" class="cart-list" aria-live="polite"></div>
+                </section>
+
+				<aside class="summary" role="complementary" aria-labelledby="summaryTitle" style="font-family:Inter,system-ui,Roboto,Arial,sans-serif;gap:18px">
+					<div style="display:flex;align-items:center;gap:12px;width:100%">
+						<h2 id="summaryTitle" style="margin:0;color:var(--accent);font-size:1.05rem;display:flex;align-items:center;gap:10px;font-weight:800">
+							<i class="fas fa-receipt" aria-hidden="true" style="color:var(--accent)"></i>
+							Order Summary
+						</h2>
+						<div class="small" style="color:var(--muted);margin-left:auto;display:flex;align-items:center;gap:10px">
+							<i class="fas fa-shield-alt" style="color:var(--muted)"></i>
+							Secure · Local · Fast
+						</div>
+					</div>
+					<div style="height:8px"></div>
+                    <div class="mini panel">
+                        <h2>Order Summary</h2>
+                        <div id="order-summary" class="small" style="margin-top:6px"></div>
+
+                        <div style="margin-top:12px" class="small">
+                            <div style="margin-bottom:8px"><i class="fas fa-truck" style="color:var(--accent)"></i> Shipping</div>
+                            <label class="small"><input type="radio" name="shipping" value="Standard" checked> Standard (3-5 days) <strong style="color:var(--accent)">KES 5.00</strong></label><br>
+                            <label class="small"><input type="radio" name="shipping" value="Express"> Express (1-2 days) <strong style="color:var(--accent)">KES 12.00</strong></label><br>
+                            <label class="small"><input type="radio" name="shipping" value="Pickup"> Pickup (Free)</label>
+                        </div>
+                    </div>
+
+					<div class="mini panel" style="font-family:Inter,system-ui,Roboto,Arial,sans-serif;font-size:0.95rem;animation:cardIn .36s cubic-bezier(.2,.9,.2,1);">
+						<div style="display:flex;align-items:center;gap:10px">
+							<i class="fas fa-info-circle" aria-hidden="true" style="color:var(--accent);font-size:1.05rem;animation:float 4s ease-in-out infinite"></i>
+							<div style="font-weight:800;color:#eaffff;font-size:1rem">Order details</div>
+						</div>
+
+						<div style="margin-top:10px;color:var(--muted);display:flex;flex-direction:column;gap:8px;font-size:0.95rem">
+							<div style="display:flex;align-items:center;gap:8px">
+								<i class="fas fa-box-open" style="color:var(--accent);width:18px;text-align:center"></i>
+								<span>Items:</span><strong id="summary-items-count" style="margin-left:auto">0</strong>
+							</div>
+
+							<div style="display:flex;align-items:center;gap:8px">
+								<i class="fas fa-tag" style="color:var(--accent);width:18px;text-align:center"></i>
+								<span>Discount:</span><strong id="summary-discount" style="margin-left:auto">KES 0.00</strong>
+							</div>
+
+							<div style="display:flex;align-items:center;gap:8px">
+								<i class="fas fa-shield-alt" style="color:var(--accent);width:18px;text-align:center"></i>
+								<span>Buyer protection</span><span style="margin-left:auto;color:var(--muted)">Included</span>
+							</div>
+						</div>
+
+						<div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+							<input id="coupon" placeholder="Coupon code" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit;font-size:0.95rem">
+							<button id="apply-coupon" class="place-btn" style="padding:8px 10px;font-size:0.9rem">Apply</button>
+						</div>
+					</div>
+
+					<script>
+						(function(){
+							// Defer until core functions are available
+							function whenReady(cb){
+								const i = setInterval(()=>{
+									if (window.readCart && window.updateSummary && window.showToast){
+										clearInterval(i); cb();
+									}
+								}, 50);
+							}
+
+							whenReady(function(){
+								const countEl = document.getElementById('summary-items-count');
+								const container = document.getElementById('cart-container');
+
+								function syncCount(){
+									countEl.textContent = container.children.length;
+								}
+								// initial sync
+								syncCount();
+
+								// observe cart changes to animate/update count
+								const mo = new MutationObserver(()=> {
+									// subtle pulse animation on change
+									countEl.style.transition = 'transform .28s cubic-bezier(.2,.9,.2,1)';
+									countEl.style.transform = 'scale(1.06)';
+									setTimeout(()=> countEl.style.transform = '', 260);
+									syncCount();
+								});
+								mo.observe(container, { childList: true });
+
+								// coupon handling with small animation
+								document.getElementById('apply-coupon').addEventListener('click', function(){
+									const code = document.getElementById('coupon').value.trim();
+									if (!code){ showToast('Enter a coupon code'); return; }
+									const btn = this;
+									btn.classList.add('busy');
+									setTimeout(()=>{
+										btn.classList.remove('busy');
+										document.getElementById('summary-discount').textContent = 'KES 5.00';
+										showToast('Coupon applied');
+										updateSummary();
+									}, 800);
+								});
+							});
+						})();
+					</script>
+                        <br><br><div class="line"><span>Items total= </span><span id="items-total">KES 0.00</span></div><br>
+                        <div class="line"><span>Shipping= </span><span id="shipping-cost">KES 0.00</span></div><br>
+                        <div class="line"><span>Payment= </span><span id="payment-method">Choose next page</span></div><br>
+                        <div style="height:1px;background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); margin:10px 0; border-radius:2px"></div>
+                        <div class="grand" id="grand-total">KES 0.00</div><br><br>
+						<button id="place-order-btn" class="place-btn" aria-label="Place order" title="Place your order"
+							style="width:100%;display:inline-flex;justify-content:center;align-items:center;gap:12px;
+								   padding:14px 16px;font-size:1.05rem;border-radius:14px;
+								   box-shadow:0 18px 48px rgba(0,209,255,0.18), 0 6px 14px rgba(0,0,0,0.45);
+								   border:1px solid rgba(255,255,255,0.06);">
+							<i class="fas fa-bolt" aria-hidden="true" style="font-size:1.1rem"></i>
+							Place Order
+						</button>
+                    </div>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <footer style="text-align:center;padding:18px 0;color:var(--muted)">
+        <div style="max-width:var(--max);margin:0 auto">
+            <a href="#" style="margin:0 .5rem;color:var(--muted)"><i class="fab fa-facebook"></i></a>
+            <a href="#" style="margin:0 .5rem;color:var(--muted)"><i class="fab fa-twitter"></i></a>
+            <a href="#" style="margin:0 .5rem;color:var(--muted)"><i class="fab fa-instagram"></i></a>
+            &copy; 2025 Marzley e-commerce. All rights reserved.
+        </div>
+    </footer>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script>
+        /* Utilities */
+        const fmt = n => Number(n||0).toFixed(2);
+        function readCart(){ try{ return JSON.parse(localStorage.getItem('cart')||'[]') }catch(e){ return [] } }
+        function writeCart(c){ localStorage.setItem('cart', JSON.stringify(c)) }
+
+        function showToast(msg, t = 2200){
+            const el = document.getElementById('toast');
+            el.textContent = msg; el.classList.add('show');
+            clearTimeout(el._t); el._t = setTimeout(()=> el.classList.remove('show'), t);
+        }
+
+        /* Animate numbers */
+        function animateNumber(el, from, to, ms=420){
+            from = Number(from)||0; to = Number(to)||0;
+            const start = performance.now();
+            function step(now){
+                const t = Math.min(1,(now-start)/ms);
+                el.textContent = 'KES ' + (from + (to-from)*t).toFixed(2);
+                if (t < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
+
+        /* Render cart with animations */
+        function renderCart(){
+            const cart = readCart();
+            const container = document.getElementById('cart-container');
+            const count = document.getElementById('cart-count');
+            const orderSummary = document.getElementById('order-summary');
+
+            if (!cart.length){
+                container.innerHTML = `
+                    <div class="empty panel">
+                        <svg width="72" height="72" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 3h2l.4 2M7 13h10l3-8H6.4" stroke="#9fb0bf" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <div style="font-weight:700;color:#d7f1fb">Your cart is empty</div>
+                        <div class="small">Explore products and add them to your cart</div>
+                        <div style="margin-top:10px"><a href="product.html" style="color:var(--accent);font-weight:700">Browse products →</a></div>
+                    </div>`;
+                orderSummary.innerHTML = '';
+                document.getElementById('items-total').textContent = 'KES 0.00';
+                document.getElementById('grand-total').textContent = 'KES 0.00';
+                document.getElementById('cart-count').textContent = '0 items';
+                return;
+            }
+
+            count.textContent = cart.length + (cart.length === 1 ? ' item' : ' items');
+
+            const wrapper = document.createDocumentFragment();
+            cart.forEach((item, idx) => {
+                const row = document.createElement('div');
+                row.className = 'cart-row enter';
+                row.dataset.idx = idx;
+                row.innerHTML = `
+                    <img class="cart-img" src="${item.img || 'https://via.placeholder.com/120'}" alt="${item.name}">
+                    <div>
+                        <div class="product-title">${escapeHtml(item.name)}</div>
+                        <div class="product-meta small">KES ${fmt(item.price)} · <span class="small">${escapeHtml(item.description || 'Local product')}</span></div>
+                    </div>
+                    <div style="text-align:center">
+                        <div class="qty-controls" role="group" aria-label="Quantity controls">
+                            <button class="dec" title="Decrease">−</button>
+                            <div style="min-width:32px;text-align:center;font-weight:800">${item.quantity}</div>
+                            <button class="inc" title="Increase">+</button>
+                        </div>
+                    </div>
+                    <div style="text-align:right">
+                        <div style="font-weight:800">KES ${fmt(item.price * item.quantity)}</div>
+                        <div style="margin-top:8px"><button class="remove-btn" data-idx="${idx}" title="Remove item"><i class="fas fa-trash"></i></button></div>
+                    </div>
+                `;
+                wrapper.appendChild(row);
+            });
+
+            container.innerHTML = '';
+            container.appendChild(wrapper);
+
+            // attach handlers and subtle entry removal delay
+            setTimeout(()=> {
+                document.querySelectorAll('.cart-row .dec').forEach(btn=>{
+                    btn.addEventListener('click', e=>{
+                        const idx = +btn.closest('.cart-row').dataset.idx; changeQty(idx, -1);
+                    });
+                });
+                document.querySelectorAll('.cart-row .inc').forEach(btn=>{
+                    btn.addEventListener('click', e=>{
+                        const idx = +btn.closest('.cart-row').dataset.idx; changeQty(idx, +1);
+                    });
+                });
+                document.querySelectorAll('.remove-btn').forEach(btn=>{
+                    btn.addEventListener('click', e=>{
+                        const idx = +btn.dataset.idx; removeItem(idx);
+                    });
+                });
+            }, 60);
+
+            // render summary
+            updateSummary();
+        }
+
+        function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+        function changeQty(idx, delta){
+            const cart = readCart();
+            if (!cart[idx]) return;
+            cart[idx].quantity = Math.max(1, (cart[idx].quantity||1) + delta);
+            writeCart(cart);
+            renderCart();
+            showToast('Quantity updated');
+        }
+
+        function removeItem(idx){
+            const cart = readCart();
+            if (!cart[idx]) return;
+            const row = document.querySelector(`.cart-row[data-idx="${idx}"]`);
+            if (row){
+                row.classList.add('exit');
+            }
+            setTimeout(()=>{
+                cart.splice(idx,1); writeCart(cart); renderCart(); showToast('Item removed');
+            }, 320);
+        }
+
+        function computeTotals(){
+            const cart = readCart();
+            let total = 0;
+            cart.forEach(i => total += (Number(i.price) || 0) * (Number(i.quantity) || 0));
+            const ship = document.querySelector('input[name="shipping"]:checked');
+            const shippingCost = ship ? (ship.value === 'Express' ? 12 : ship.value === 'Standard' ? 5 : 0) : 5;
+            const payment = document.querySelector('input[name="payment"]:checked');
+            const paymentMethod = payment ? payment.value : 'Credit Card';
+            return { total, shippingCost, paymentMethod };
+        }
+
+        function updateSummary(){
+            const { total, shippingCost, paymentMethod } = computeTotals();
+            const itemsEl = document.getElementById('items-total');
+            const grandEl = document.getElementById('grand-total');
+            animateNumber(itemsEl, parseFloat(itemsEl.textContent.replace('KES ','')||0), total, 360);
+            animateNumber(grandEl, parseFloat(grandEl.textContent.replace('KES ','')||0), total + shippingCost, 360);
+            document.getElementById('shipping-cost').textContent = 'KES ' + fmt(shippingCost);
+            document.getElementById('payment-method').textContent = paymentMethod;
+            document.getElementById('order-summary').innerHTML = `<div class="small">Items: <strong>${readCart().length}</strong> · Shipping: <strong>$${fmt(shippingCost)}</strong> · Payment: <strong>${escapeHtml(paymentMethod)}</strong></div>`;
+        }
+
+        /* place order */
+        document.getElementById('place-order-btn').addEventListener('click', function(){
+            const cart = readCart();
+            if (!cart.length){ showToast('Your cart is empty.'); return; }
+            const btn = this; btn.classList.add('busy'); btn.disabled = true;
+            setTimeout(()=>{ btn.classList.remove('busy'); btn.disabled = false; }, 1600);
+            const amount = computeTotals().total + computeTotals().shippingCost;
+            showToast('Redirecting to payment…');
+            setTimeout(()=> { window.location.href = 'mpesa.php?amount=' + encodeURIComponent(amount.toFixed(2)); }, 700);
+        });
+
+        /* form listeners to recalc summary */
+        document.querySelectorAll('input[name="shipping"], input[name="payment"]').forEach(el=>{
+            el.addEventListener('change', updateSummary);
+        });
+
+        /* initial render */
+        renderCart();
+
+        /* dev helper to add demo items quickly */
+        window.__addDemoItem = function(){
+            const cart = readCart();
+            cart.push({ name: 'Sample product ' + (cart.length+1), price: (Math.random()*120+20).toFixed(2), quantity: 1, img:'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=60', description:'From Marzley' });
+            writeCart(cart); renderCart(); showToast('Demo item added');
+        };
+    </script>
+</body>
+
+</html>

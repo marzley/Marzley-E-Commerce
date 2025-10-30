@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Products - Marzley Shop</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <style>
+    :root{
+      --bg:#f6f8fb;
+      --nav:#21334a;
+      --accent:#e67e22;
+      --muted:#6b7785;
+      --card:#ffffff;
+      --success:#34a853;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter, Roboto, Arial, sans-serif;background:var(--bg);color:#24313a;-webkit-font-smoothing:antialiased}
+    header{background:var(--nav);color:#fff;position:sticky;top:0;z-index:1100;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+    .container{max-width:1200px;margin:0 auto;padding:0 16px}
+    nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+    .logo{font-weight:800;font-size:1.15rem}
+    .nav-links{display:flex;gap:16px;list-style:none;margin:0;padding:0;align-items:center}
+    .nav-links a{color:#fff;text-decoration:none;padding:6px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:8px;font-weight:600}
+    .nav-actions{display:flex;gap:12px;align-items:center}
+    .cart-badge{background:#ff4d4f;color:#fff;border-radius:999px;padding:2px 8px;font-weight:700;font-size:0.82rem;margin-left:6px}
+
+    .page-head{max-width:1200px;margin:1.25rem auto;padding:0 16px}
+    .page-head h1{margin:0 0 .6rem}
+
+    .products-section { max-width:1200px;margin:0 auto 2rem;padding:18px }
+    .products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+    .product-card{background:linear-gradient(180deg,#fff,#fbfbfc);padding:14px;border-radius:12px;text-align:center;box-shadow:0 6px 18px rgba(16,30,50,0.04);transition:transform .18s ease}
+    .product-card:hover{transform:translateY(-6px)}
+    .product-card img{width:100%;height:160px;object-fit:cover;border-radius:8px}
+    .product-card h3{margin:.75rem 0 .35rem;font-size:1.05rem}
+    .product-card p{color:var(--muted);font-size:.95rem;margin:0 0 .6rem;min-height:36px}
+    .price{font-weight:800;color:#24313a;margin-bottom:.6rem}
+    .add-cart-btn{background:var(--accent);color:#fff;border:none;padding:.6rem .9rem;border-radius:8px;cursor:pointer;font-weight:700}
+    .add-cart-btn .fa-cart-plus{margin-right:8px}
+
+    /* confirmation box centered */
+    .confirm-wrap{position:fixed;left:50%;top:22%;transform:translateX(-50%) translateY(-20px);z-index:2200;display:none;min-width:320px}
+    .confirm-card{background:#fff;border-radius:12px;padding:16px 18px;box-shadow:0 14px 40px rgba(20,40,60,0.12);display:flex;gap:12px;align-items:center}
+    .confirm-thumb{width:64px;height:64px;border-radius:8px;overflow:hidden;flex:0 0 64px;border:1px solid #eef2f6}
+    .confirm-info{flex:1;min-width:0}
+    .confirm-title{font-weight:800;color:#0f2b22}
+    .confirm-sub{color:var(--muted);font-size:0.92rem;margin-top:4px}
+    .confirm-actions{display:flex;gap:8px;margin-left:auto}
+    .btn-outline{background:transparent;border:1px solid #dfe8ef;padding:.5rem .7rem;border-radius:8px;cursor:pointer}
+    .btn-primary{background:var(--success);color:#fff;border:none;padding:.5rem .8rem;border-radius:8px;cursor:pointer;font-weight:700}
+    .confirm-show{display:block;animation:popIn .28s ease both}
+    @keyframes popIn{from{opacity:0; transform:translateX(-50%) translateY(-8px) scale(.98)} to{opacity:1; transform:translateX(-50%) translateY(0) scale(1)}}
+
+    /* small responsive tweaks */
+    @media(max-width:520px){
+      .confirm-card{flex-direction:column;align-items:flex-start}
+      .confirm-actions{width:100%;justify-content:space-between;margin-top:8px}
+      .confirm-wrap{top:16%}
+    }
+
+    footer{padding:2rem 0;text-align:center;color:#fff;background:linear-gradient(135deg,#09203f 0,#537895 100%);margin-top:2rem}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="logo">Marzley Shop</div>
+        </div>
+
+        <ul class="nav-links" role="menu" aria-label="Main navigation">
+          <li><a href="home.html"><i class="fas fa-home"></i> Home</a></li>
+          <li><a href="about us.html"><i class="fas fa-info-circle"></i> About</a></li>
+          <li><a href="product.html"><i class="fas fa-box"></i> Products</a></li>
+          <li><a href="add to cart.html"><i class="fas fa-shopping-cart"></i> Cart <span id="cart-count" class="cart-badge" style="display:none">0</span></a></li>
+          <li><a href="index.php"><i class="fas fa-user"></i> Account</a></li>
+          <li><a href="admin.html"><i class="fas fa-user-shield"></i> Admin</a></li>
+        </ul>
+
+        <div class="nav-actions" aria-hidden="false">
+          <a class="add-cart-btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:#fff;padding:.45rem .8rem;border-radius:8px;text-decoration:none" href="product.html"><i class="fas fa-store"></i> Shop</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-head container">
+    <h1>All Products</h1>
+    <p style="color:var(--muted);margin:8px 0 18px">Browse curated products from Marzley. Click Add to Cart to save items for checkout.</p>
+  </main>
+
+  <section class="products-section container" aria-label="Products">
+    <div class="products-grid" id="products-grid"></div>
+  </section>
+
+  <div class="confirm-wrap" id="confirm-wrap" role="status" aria-live="polite">
+    <div class="confirm-card" id="confirm-card" aria-hidden="true">
+      <div class="confirm-thumb" id="confirm-thumb"><img src="" alt="" style="width:100%;height:100%;object-fit:cover"></div>
+      <div class="confirm-info">
+        <div class="confirm-title" id="confirm-title">Item added</div>
+        <div class="confirm-sub" id="confirm-sub">Product added to your cart</div>
+      </div>
+      <div class="confirm-actions" id="confirm-actions">
+        <button class="btn-outline" id="continue-btn">Continue</button>
+        <button class="btn-primary" id="view-cart-btn">View Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Marzley Shop. All rights reserved.
+  </footer>
+
+  <script>
+    // products data
+    function getDefaultProducts() {
+      return [
+        { name: 'Organic Coffee Beans', price: '515.99', stock: 20, img: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80' },
+        { name: 'Handmade Basket', price: '1124.99', stock: 10, img: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80' },
+        { name: 'Marzley Tea', price: '999.99', stock: 30, img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80' },
+        { name: 'Pure Marzley Honey', price: '649.00', stock: 15, img: 'https://images.unsplash.com/photo-1511690743698-d9d85f2fbf38?auto=format&fit=crop&w=800&q=80' },
+        { name: 'Macadamia Nuts', price: '899.00', stock: 25, img: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=800&q=80' },
+        { name: 'Avocado Oil', price: '749.00', stock: 12, img: 'https://images.unsplash.com/photo-1511690743698-d9d85f2fbf38?auto=format&fit=crop&w=800&q=80' },
+        { name: 'Dried Mango Slices', price: '299.00', stock: 40, img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80' },
+        { name: 'Herbal Soap', price: '159.00', stock: 50, img: 'https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=crop&w=800&q=80' }
+      ];
+    }
+
+    // render grid
+    function renderProducts(filter = '') {
+      var defaultProducts = getDefaultProducts();
+      var adminProducts = JSON.parse(localStorage.getItem('admin_products') || '[]');
+      var products = defaultProducts.concat(adminProducts);
+      var grid = document.getElementById('products-grid');
+      grid.innerHTML = '';
+      products.forEach(function(prod) {
+        if (!prod.name.toLowerCase().includes(filter.toLowerCase())) return;
+        var card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+          <img src="${prod.img}" alt="${prod.name}">
+          <h3>${prod.name}</h3>
+          <p>${prod.stock ? 'In stock: ' + prod.stock : ''}</p>
+          <div class="price">KES ${Number(prod.price).toLocaleString('en-US')}</div>
+          <button class="add-cart-btn" data-name="${escapeHtml(prod.name)}" data-price="${Number(prod.price).toFixed(2)}" data-img="${prod.img}">
+            <i class="fas fa-cart-plus"></i> Add to Cart
+          </button>
+        `;
+        grid.appendChild(card);
+      });
+      attachAddHandlers();
+      updateCartCount();
+    }
+
+    // simple HTML escape
+    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+    // cart utils
+    function readCart(){ try{ return JSON.parse(localStorage.getItem('cart')||'[]'); }catch(e){ return []; } }
+    function writeCart(cart){ localStorage.setItem('cart', JSON.stringify(cart)); updateCartCount(); }
+
+    function updateCartCount(){
+      var el = document.getElementById('cart-count');
+      var cart = readCart();
+      var qty = cart.reduce((s,i)=> s + (parseInt(i.quantity,10)||1), 0);
+      if (!el) return;
+      if (qty>0){ el.style.display='inline-block'; el.textContent = qty; } else { el.style.display='none'; el.textContent='0'; }
+    }
+
+    // attach handlers to add buttons
+    function attachAddHandlers(){
+      document.querySelectorAll('.add-cart-btn').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var name = btn.dataset.name || btn.getAttribute('data-name') || (btn.closest('.product-card').querySelector('h3').innerText);
+          var price = parseFloat(btn.dataset.price || btn.getAttribute('data-price') || '0') || 0;
+          var img = btn.dataset.img || btn.getAttribute('data-img') || '';
+          var cart = readCart();
+          var existing = cart.find(function(i){ return i.name === name; });
+          if (existing) existing.quantity = (parseInt(existing.quantity,10)||1) + 1;
+          else cart.push({ name: name, price: price.toFixed(2), img: img, quantity: 1 });
+          writeCart(cart);
+          showConfirm({ name: name, price: price, img: img });
+        });
+      });
+    }
+
+    // confirmation panel
+    var confirmWrap = document.getElementById('confirm-wrap');
+    var confirmCard = document.getElementById('confirm-card');
+    var confirmThumb = document.getElementById('confirm-thumb').querySelector('img');
+    var confirmTitle = document.getElementById('confirm-title');
+    var confirmSub = document.getElementById('confirm-sub');
+    var continueBtn = document.getElementById('continue-btn');
+    var viewCartBtn = document.getElementById('view-cart-btn');
+
+    function showConfirm(item){
+      confirmThumb.src = item.img || '';
+      confirmThumb.alt = item.name || 'Product';
+      confirmTitle.textContent = item.name || 'Added to cart';
+      confirmSub.textContent = 'KES ' + (Number(item.price||0)).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+      confirmWrap.style.display = 'block';
+      confirmCard.setAttribute('aria-hidden','false');
+      confirmCard.classList.add('confirm_show');
+
+      // auto-hide after 3.5s
+      clearTimeout(confirmWrap._timer);
+      confirmWrap._timer = setTimeout(hideConfirm, 3500);
+    }
+    function hideConfirm(){
+      confirmCard.classList.remove('confirm_show');
+      confirmCard.setAttribute('aria-hidden','true');
+      // animate out then hide
+      setTimeout(function(){ confirmWrap.style.display = 'none'; }, 220);
+    }
+
+    continueBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      hideConfirm();
+    });
+    viewCartBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      // open cart page
+      window.location.href = 'add to cart.html';
+    });
+
+    // initial render
+    renderProducts();
+
+    // search (simple inline)
+    var searchForm = document.createElement('form');
+    searchForm.style.maxWidth = '480px';
+    searchForm.style.margin = '10px auto';
+    searchForm.innerHTML = '<div style="display:flex;gap:8px"><input id="search-input" placeholder="Search products..." style="flex:1;padding:.6rem;border-radius:8px;border:1px solid #e7eef9"><button class="add-cart-btn" type="submit" style="padding:.55rem .8rem">Search</button></div>';
+    document.querySelector('.page-head').appendChild(searchForm);
+    searchForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      var q = document.getElementById('search-input').value || '';
+      renderProducts(q.trim());
+    });
+
+    // expose for console debugging
+    window._mtk = { renderProducts: renderProducts, readCart: readCart, writeCart: writeCart };
+
+  </script>
+</body>
+</html>

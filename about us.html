@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About — Marzley Shop / Marzley Tech Solutions</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <style>
+    :root{
+      --bg:#f3f7fb;
+      --card:#ffffff;
+      --nav:#21334a;
+      --accent:#e67e22;
+      --muted:#6b7785;
+      --success:#34a853;
+      --glass:rgba(255,255,255,0.7);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,Roboto,Arial,sans-serif;background:var(--bg);color:#24313a;-webkit-font-smoothing:antialiased;line-height:1.45}
+    .container{max-width:1100px;margin:0 auto;padding:0 18px}
+
+    /* header / nav */
+    header{background:var(--nav);color:#fff;position:sticky;top:0;z-index:1200}
+    nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:.85rem 0}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{font-weight:800;color:var(--accent);font-size:1.15rem}
+    .nav-links{display:flex;gap:14px;align-items:center;margin:0;padding:0;list-style:none}
+    .nav-links a{color:#fff;text-decoration:none;font-weight:600;padding:8px 10px;border-radius:8px;display:inline-flex;gap:8px;align-items:center}
+    .nav-actions{display:flex;gap:10px;align-items:center}
+    .nav-toggle{display:none;background:transparent;border:0;color:#fff;font-size:1.1rem;padding:6px;cursor:pointer}
+
+    @media(max-width:900px){
+      .nav-links{position:absolute;left:12px;right:12px;top:64px;background:var(--nav);flex-direction:column;padding:12px;gap:8px;border-radius:8px;display:none}
+      .nav-links.show{display:flex}
+      .nav-toggle{display:inline-block}
+    }
+
+    /* page layout */
+    main{padding:26px 0 80px}
+    .hero{
+      background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250,250,252,0.9));
+      border-radius:12px;padding:20px;box-shadow:0 8px 30px rgba(20,40,60,0.06);
+      display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin:18px 0;
+      transform:translateY(0); overflow:hidden;
+    }
+    .hero .lead{flex:1;min-width:260px}
+    .hero h1{margin:0 0 6px;font-size:1.6rem;color:#0f2b22}
+    .hero p{margin:0;color:var(--muted)}
+
+    .founder-photo{width:132px;height:132px;border-radius:12px;overflow:hidden;border:1px solid #eef4fb;flex:0 0 132px}
+    .founder-photo img{width:100%;height:100%;object-fit:cover;display:block}
+
+    /* sections & cards */
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:14px}
+    .card{background:var(--card);padding:14px;border-radius:10px;box-shadow:0 8px 30px rgba(20,40,60,0.04)}
+    .card h3{margin:0 0 8px}
+    .muted{color:var(--muted)}
+
+    .values{display:flex;gap:12px;flex-wrap:wrap}
+    .value{flex:1;min-width:160px;padding:12px;border-radius:10px;background:linear-gradient(180deg,#fff,#fbfbfd);box-shadow:0 6px 18px rgba(20,40,60,0.04)}
+
+    .team{display:flex;gap:12px;flex-wrap:wrap}
+    .team-member{flex:1;min-width:160px;padding:12px;border-radius:10px;background:linear-gradient(180deg,#fff,#fbfbfd);text-align:center}
+    .team-member img{width:88px;height:88px;border-radius:50%;object-fit:cover;margin-bottom:8px}
+
+    .contact{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    .contact .links{display:flex;flex-direction:column;gap:8px}
+    .contact a{display:inline-flex;gap:8px;align-items:center;padding:8px 10px;border-radius:8px;background:#f7fbff;color:#133f1e;text-decoration:none;border:1px solid rgba(19,63,33,0.04);font-weight:700}
+
+    footer{padding:18px 0;text-align:center;color:#fff;background:linear-gradient(135deg,#0b2a3a 0,#2b5870 100%);margin-top:28px;border-top-left-radius:12px;border-top-right-radius:12px}
+
+    /* confirmatory / small utilities */
+    .accent{color:var(--accent);font-weight:700}
+
+    /* animations */
+    .reveal{opacity:0; transform:translateY(10px);transition:opacity .5s ease, transform .55s cubic-bezier(.2,.9,.2,1)}
+    .reveal.in-view{opacity:1; transform:translateY(0)}
+    .fade{opacity:0;transition:opacity .6s ease}
+    .fade.in-view{opacity:1}
+
+    /* responsive */
+    @media(max-width:880px){
+      .grid{grid-template-columns:1fr}
+      .hero{padding:16px}
+      .founder-photo{width:110px;height:110px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="brand">
+          <button class="nav-toggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
+          <div class="logo">Marzley Shop</div>
+        </div>
+
+        <ul class="nav-links" role="menu" aria-label="Main navigation">
+          <li><a href="home.html"><i class="fas fa-home"></i> Home</a></li>
+          <li><a href="product.html"><i class="fas fa-box"></i> Products</a></li>
+          <li><a href="add to cart.html"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+          <li><a href="index.php"><i class="fas fa-user"></i> Account</a></li>
+          <li><a href="admin.html"><i class="fas fa-user-shield"></i> Admin</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a class="accent" href="mailto:info@marzleytech.com"><i class="fas fa-envelope"></i> info@marzleytech.com</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- hero / founder -->
+    <section class="hero reveal" id="hero">
+      <div class="founder-photo">
+        <img src="gallery/sir spker1.png" alt="Kelvin Wanyoike — Marzley Tech Solutions">
+      </div>
+
+      <div class="lead">
+        <h1>Kelvin "Marzley" Wanyoike — Founder & Owner</h1>
+        <p class="muted">Frontend Developer, trainer and tech enthusiast from Murang'a County, Kenya. I build beautiful, functional websites and train others to do the same.</p>
+        <p style="margin-top:10px"><span class="accent">Marzley Tech Solutions</span> — Turning ideas into reality, one line of code at a time.</p>
+      </div>
+    </section>
+
+    <!-- two-column overview -->
+    <div class="grid" aria-hidden="false">
+      <div class="card reveal">
+        <h3>About the company</h3>
+        <p class="muted">Marzley Shop is powered by Marzley Tech Solutions. We connect local producers and artisans to customers through an easy and secure online experience. Our mission is to support community-led entrepreneurship while delivering high quality products.</p>
+
+        <div style="margin-top:12px" class="values">
+          <div class="value">
+            <strong>Quality</strong>
+            <div class="muted">Carefully sourced products and consistent quality checks.</div>
+          </div>
+          <div class="value">
+            <strong>Sustainability</strong>
+            <div class="muted">Eco-friendly sourcing and fair trade practices.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <h3>Founder message</h3>
+        <p class="muted">Hey there! I’m Kelvin — you can call me Kelvin or Marzley. I love coding, teaching and mentoring. When I’m not building or teaching, I explore new tech trends, watch documentaries and help others get into tech.</p>
+
+        <div style="margin-top:12px">
+          <div><strong>Quick bio</strong></div>
+          <ul class="muted" style="margin:8px 0 0;padding-left:18px">
+            <li>Frontend developer & trainer</li>
+            <li>Based in Murang'a County, Kenya</li>
+            <li>Passionate about mentorship and practical tech education</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- team -->
+    <section style="margin-top:18px" class="reveal">
+      <h2 style="margin:0 0 12px">Team & Roles</h2>
+      <div class="team">
+        <div class="team-member card fade">
+          <img src="gallery/sir spker1.png" alt="Kelvin Wanyoike">
+          <div style="font-weight:700">Kelvin Wanyoike</div>
+          <div class="muted">Founder & Lead — Marzley Tech Solutions</div>
+        </div>
+
+        <div class="team-member card fade">
+          <img src="gallery/sir1.jpeg" alt="Operations">
+          <div style="font-weight:700">Operations</div>
+          <div class="muted">Head of Operations</div>
+        </div>
+
+        <div class="team-member card fade">
+          <img src="gallery/WhatsApp Image 2025-09-19 at 2.51.32 PM.jpeg" alt="Lead Developer">
+          <div style="font-weight:700">Lead Developer</div>
+          <div class="muted">Platform & integrations</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- contact & socials -->
+    <section style="margin-top:18px">
+      <div class="grid">
+        <div class="card reveal">
+          <h3>Contact</h3>
+          <div class="muted">For partnerships, custom development or support, reach out directly.</div>
+          <div style="margin-top:10px">
+            <div><strong>Email</strong><div class="muted">info@marzleytech.com</div></div>
+            <div style="margin-top:8px"><strong>Phone / WhatsApp</strong><div class="muted"><a href="https://wa.me/254745789590" target="_blank" rel="noopener">+254 745 789 590</a></div></div>
+          </div>
+        </div>
+
+        <div class="card reveal">
+          <h3>Connect with me</h3>
+          <div class="contact">
+            <div class="links">
+              <a href="https://www.linkedin.com/in/kelvin-githeru-wanyoike" target="_blank" rel="noopener"><i class="fab fa-linkedin" style="color:#0b66c2"></i> LinkedIn</a>
+              <a href="https://github.com/kelvinwanyoike" target="_blank" rel="noopener"><i class="fab fa-github"></i> GitHub</a>
+              <a href="https://wa.me/254745789590" target="_blank" rel="noopener"><i class="fab fa-whatsapp" style="color:#0dbb3b"></i> WhatsApp</a>
+              <a href="https://www.instagram.com/marzleytech" target="_blank" rel="noopener"><i class="fab fa-instagram" style="color:#c32aa3"></i> Instagram</a>
+              <a href="https://www.tiktok.com/@marzleytech" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i> TikTok</a>
+              <a href="https://www.facebook.com/marzleytechsolutions" target="_blank" rel="noopener"><i class="fab fa-facebook" style="color:#1877f2"></i> Facebook</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div style="margin-bottom:6px">Contact: <a href="mailto:info@marzleytech.com" style="color:#fff;text-decoration:underline">info@marzleytech.com</a> • WhatsApp: <a href="https://wa.me/254745789590" style="color:#fff;text-decoration:underline">+254 745 789 590</a></div>
+      <div>&copy; 2025 Marzley Tech Solutions — Marzley Shop</div>
+    </div>
+  </footer>
+
+  <script>
+    // nav toggle
+    (function(){
+      var toggle = document.querySelector('.nav-toggle');
+      var links = document.querySelector('.nav-links');
+      if (!toggle || !links) return;
+      toggle.addEventListener('click', function(){ links.classList.toggle('show'); });
+      window.addEventListener('resize', function(){ if (window.innerWidth > 900) links.classList.remove('show'); });
+    })();
+
+    // simple reveal on scroll
+    (function(){
+      var io = new IntersectionObserver(function(items){
+        items.forEach(function(i){
+          if (i.isIntersecting) {
+            i.target.classList.add('in-view');
+            // for fade elements, stagger
+            if (i.target.classList.contains('team')) {
+              Array.from(i.target.querySelectorAll('.fade')).forEach(function(el, idx){
+                setTimeout(function(){ el.classList.add('in-view'); }, idx * 120);
+              });
+            }
+            io.unobserve(i.target);
+          }
+        });
+      }, {root:null,threshold:0.12});
+      document.querySelectorAll('.reveal, .fade, .hero').forEach(function(el){ io.observe(el); });
+    })();
+
+    // small accessibility: keyboard close nav with Escape
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') document.querySelectorAll('.nav-links').forEach(function(n){ n.classList.remove('show'); });
+    });
+  </script>
+</body>
+</html>
