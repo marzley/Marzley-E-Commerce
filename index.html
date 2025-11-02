@@ -1,0 +1,1307 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>Marzley E-Commerce</title>
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+	<style>
+		:root {
+			--bg: #f6f8fb;
+			--nav: #21334a;
+			--accent: #e67e22;
+			--muted: #6b7785;
+			--card: #ffffff;
+		}
+
+		* {
+			box-sizing: border-box
+		}
+
+		body {
+			margin: 0;
+			font-family: Inter, Roboto, Arial, sans-serif;
+			background: var(--bg);
+			color: #24313a;
+			-webkit-font-smoothing: antialiased
+		}
+
+		header {
+			background: var(--nav);
+			color: #fff;
+			position: sticky;
+			top: 0;
+			z-index: 1100;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06)
+		}
+
+		.container {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 0 16px
+		}
+
+		nav {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 12px;
+			padding: 12px 0
+		}
+
+		.logo {
+			font-weight: 800;
+			font-size: 1.15rem
+		}
+
+		.nav-links {
+			display: flex;
+			gap: 16px;
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			align-items: center
+		}
+
+		.nav-links a {
+			color: #fff;
+			text-decoration: none;
+			padding: 6px 8px;
+			border-radius: 6px;
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			font-weight: 600
+		}
+
+		.nav-actions {
+			display: flex;
+			gap: 12px;
+			align-items: center
+		}
+
+		.cart-badge {
+			background: #ff4d4f;
+			color: #fff;
+			border-radius: 999px;
+			padding: 2px 8px;
+			font-weight: 700;
+			font-size: 0.82rem;
+			margin-left: 6px
+		}
+
+		/* hero */
+		.hero {
+			background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+			color: #fff;
+			padding: 4.5rem 0 5.5rem;
+			text-align: center
+		}
+
+		.hero h1 {
+			font-size: 2.2rem;
+			margin: 0 0 .5rem
+		}
+
+		.hero p {
+			max-width: 820px;
+			margin: 0 auto 1.5rem;
+			font-size: 1.05rem;
+			color: rgba(255, 255, 255, 0.95)
+		}
+
+		.cta-btn {
+			background: var(--accent);
+			color: #fff;
+			padding: .85rem 1.25rem;
+			border-radius: 8px;
+			border: none;
+			cursor: pointer;
+			font-weight: 700;
+			text-decoration: none
+		}
+
+		/* featured */
+		.featured {
+			max-width: 1200px;
+			margin: -3.5rem auto 2rem;
+			padding: 2rem;
+			background: var(--card);
+			border-radius: 12px;
+			box-shadow: 0 6px 28px rgba(30, 45, 60, 0.06)
+		}
+
+		.products-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+			gap: 1rem
+		}
+
+		.product-card {
+			background: linear-gradient(180deg, #fff, #fbfbfc);
+			padding: 14px;
+			border-radius: 10px;
+			text-align: center;
+			box-shadow: 0 6px 18px rgba(16, 30, 50, 0.04)
+		}
+
+		.product-card img {
+			width: 100%;
+			height: 140px;
+			object-fit: cover;
+			border-radius: 8px
+		}
+
+		.product-card h3 {
+			margin: .75rem 0 .45rem;
+			font-size: 1.05rem
+		}
+
+		.product-card p {
+			color: var(--muted);
+			font-size: .95rem;
+			margin: 0 0 .7rem
+		}
+
+		.price {
+			font-weight: 800;
+			color: #24313a;
+			margin-bottom: .6rem
+		}
+
+		.add-cart-btn {
+			background: var(--nav);
+			color: #fff;
+			border: none;
+			padding: .6rem .9rem;
+			border-radius: 8px;
+			cursor: pointer;
+			font-weight: 700
+		}
+
+		.add-cart-btn .fa-cart-plus {
+			margin-right: 8px
+		}
+
+		/* testimonial / subscribe */
+		section.small-card {
+			max-width: 600px;
+			margin: 2rem auto;
+			padding: 1.5rem;
+			background: var(--card);
+			border-radius: 12px;
+			box-shadow: 0 6px 22px rgba(20, 40, 60, 0.04);
+			text-align: center
+		}
+
+		footer {
+			padding: 2rem 0;
+			text-align: center;
+			color: #fff;
+			background: linear-gradient(135deg, #09203f 0, #537895 100%);
+			margin-top: 2rem
+		}
+
+		/* responsive nav toggle */
+		.nav-toggle {
+			display: none;
+			background: transparent;
+			border: 0;
+			color: #fff;
+			font-size: 1.2rem;
+			padding: 6px 8px;
+			cursor: pointer
+		}
+
+		@media(max-width:900px) {
+			nav {
+				align-items: center
+			}
+
+			.nav-links {
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 64px;
+				background: var(--nav);
+				flex-direction: column;
+				padding: 12px;
+				gap: 8px;
+				display: none
+			}
+
+			.nav-links.show {
+				display: flex
+			}
+
+			.nav-toggle {
+				display: inline-block
+			}
+		}
+
+		/* toast */
+		.toast {
+			position: fixed;
+			right: 18px;
+			bottom: 18px;
+			background: #24313a;
+			color: #fff;
+			padding: 12px 16px;
+			border-radius: 10px;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+			display: none;
+			z-index: 2200
+		}
+
+		.toast.show {
+			display: block;
+			animation: pop .28s ease
+		}
+
+		@keyframes pop {
+			from {
+				transform: translateY(8px);
+				opacity: 0
+			}
+
+			to {
+				transform: none;
+				opacity: 1
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<header>
+		<div class="container">
+			<nav>
+				<div style="display:flex;align-items:center;gap:12px">
+					<button class="nav-toggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
+					<div class="logo">Marzley e-commerce</div>
+				</div>
+
+				<ul class="nav-links" role="menu" aria-label="Main navigation">
+					<li><a href="home.html"><i class="fas fa-home"></i> Home</a></li>
+					<li><a href="about us.html"><i class="fas fa-info-circle"></i> About</a></li>
+					<li><a href="product.html"><i class="fas fa-box"></i> Products</a></li>
+					<li><a href="add to cart.html"><i class="fas fa-shopping-cart"></i> Cart <span id="cart-count"
+								class="cart-badge" style="display:none">0</span></a></li>
+					<li><a href="index.php"><i class="fas fa-user"></i> Account</a></li>
+					<li><a href="admin.html"><i class="fas fa-user-shield"></i> Admin</a></li>
+				</ul>
+
+				<div class="nav-actions" aria-hidden="false">
+					<a class="cta-btn" href="product.html">Browse products</a>
+				</div>
+			</nav>
+		</div>
+	</header>
+
+	<main>
+		<style>
+			/* scoped enhancements for main - extended */
+			.hero {
+				position: relative;
+				padding: 5rem 0 6rem;
+				color: #fff;
+				overflow: hidden;
+				--glass: rgba(255, 255, 255, 0.04);
+			}
+
+			.hero::before {
+				content: "";
+				position: absolute;
+				inset: 0;
+				background-image: inherit;
+				background-size: cover;
+				background-position: center;
+				filter: blur(12px) saturate(1.05) brightness(.5);
+				transform: scale(1.04);
+				z-index: 0;
+				will-change: transform, filter;
+			}
+
+			.hero>.container {
+				position: relative;
+				z-index: 2
+			}
+
+			.hero .hero-grid {
+				align-items: center;
+				gap: 32px
+			}
+
+			.hero .hero-card {
+				transition: transform .9s cubic-bezier(.2, .9, .2, 1), box-shadow .6s;
+				will-change: transform
+			}
+
+			.hero .hero-card:hover {
+				transform: translateY(-8px) rotate(-.8deg);
+				box-shadow: 0 28px 80px rgba(2, 19, 24, .7)
+			}
+
+			.glow-btn {
+				box-shadow: 0 12px 40px rgba(230, 126, 34, .12), 0 0 30px rgba(0, 209, 255, .03);
+				transition: transform .18s
+			}
+
+			.glow-btn:hover {
+				transform: translateY(-4px)
+			}
+
+			/* reveal animations */
+			.reveal {
+				opacity: 0;
+				transform: translateY(12px);
+				transition: all .6s cubic-bezier(.2, .9, .2, 1)
+			}
+
+			.reveal.show {
+				opacity: 1;
+				transform: none
+			}
+
+			/* product cards tilt */
+			.product-card.futuristic {
+				transform-style: preserve-3d;
+				transition: transform .48s cubic-bezier(.2, .9, .2, 1), box-shadow .35s
+			}
+
+			.product-card.futuristic:hover {
+				transform: perspective(900px) rotateX(2deg) rotateY(-6deg) translateY(-6px);
+				box-shadow: 0 30px 80px rgba(2, 19, 24, .6)
+			}
+
+			/* flash offer */
+			.flash-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+				gap: 12px
+			}
+
+			.offer-badge {
+				position: absolute;
+				left: 12px;
+				top: 12px;
+				background: linear-gradient(90deg, #ff7a59, #ffd36b);
+				color: #081018;
+				padding: 6px 10px;
+				border-radius: 999px;
+				font-weight: 800;
+				box-shadow: 0 8px 26px rgba(255, 122, 89, .12)
+			}
+
+			.countdown {
+				font-family: monospace;
+				font-weight: 800;
+				color: #e84500;
+				margin-top: 8px
+			}
+
+			/* horizontal scroller for trending */
+			.h-scroll {
+				display: flex;
+				gap: 12px;
+				overflow: auto;
+				padding-bottom: 6px;
+				scroll-snap-type: x proximity
+			}
+
+			.h-scroll .card {
+				min-width: 260px;
+				scroll-snap-align: start
+			}
+
+			/* partners */
+			.partners {
+				display: flex;
+				gap: 18px;
+				flex-wrap: wrap;
+				align-items: center;
+				justify-content: center
+			}
+
+			.partner-logo {
+				width: 120px;
+				height: 44px;
+				opacity: .9;
+				filter: grayscale(.0);
+				transition: transform .18s, opacity .18s
+			}
+
+			.partner-logo:hover {
+				transform: translateY(-6px);
+				opacity: 1
+			}
+
+			/* FAQ */
+			.faq-item {
+				border-radius: 12px;
+				padding: 12px;
+				background: linear-gradient(180deg, #fff, #fbfcff);
+				margin-bottom: 8px;
+				cursor: pointer
+			}
+
+			.faq-body {
+				max-height: 0;
+				overflow: hidden;
+				transition: max-height .36s ease
+			}
+
+			.faq-item.open .faq-body {
+				max-height: 220px;
+				padding-top: 10px
+			}
+
+			/* small helpers */
+			.muted {
+				color: rgba(36, 49, 58, .64)
+			}
+
+			@media(max-width:900px) {
+				.hero .hero-grid {
+					grid-template-columns: 1fr
+				}
+
+				.h-scroll .card {
+					min-width: 220px
+				}
+
+				.carousel-item {
+					min-width: 220px
+				}
+			}
+		</style>
+
+		<!-- Hero (parallax + blur) -->
+		<section class="hero reveal" aria-label="Hero" data-parallax="true"
+			style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80')">
+			<div class="parallax-layer"
+				style="background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80'); opacity:.28;">
+			</div>
+			<div class="container blur-content">
+				<div class="hero-grid" style="display:grid;grid-template-columns:1fr 440px">
+					<div>
+						<h1 style="font-size:2.6rem;margin:0 0 .6rem;line-height:1.02">Discover Marzley — curated
+							goods with a future-forward vibe</h1>
+						<p style="max-width:720px;margin:0 0 1.25rem;color:rgba(255,255,255,.95)">Handcrafted,
+							sustainable and tech-enabled. Shop coffee, tea, crafts and more — track orders, pay locally
+							and support communities.</p>
+						<div style="display:flex;gap:12px;align-items:center">
+							<a class="cta-btn glow-btn" href="product.html">Shop Now <i class="fas fa-rocket"
+									style="margin-left:8px"></i></a>
+							<a href="add to cart.html" class="cta-btn"
+								style="background:transparent;border:1px solid rgba(255,255,255,0.18);color:#fff;padding:.75rem 1rem;border-radius:8px">View
+								Cart <i class="fas fa-shopping-cart" style="margin-left:8px"></i></a>
+						</div>
+					</div>
+
+					<div
+						style="position:relative;min-height:320px;display:flex;align-items:center;justify-content:center">
+						<div class="hero-card"
+							style="width:100%;max-width:420px;border-radius:14px;padding:16px;background:linear-gradient(135deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));box-shadow:0 18px 60px rgba(2,19,24,0.6);animation:float 6s ease-in-out infinite">
+							<div style="position:relative">
+								<span class="offer-badge">20% OFF</span>
+								<img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80"
+									alt="Featured"
+									style="width:100%;height:220px;object-fit:cover;border-radius:10px;display:block">
+							</div>
+							<div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+								<div>
+									<div style="font-weight:900;font-size:1.05rem">Organic Coffee Beans</div>
+									<div style="font-size:.92rem;color:var(--muted)">Single origin • 250g</div>
+									<div class="product-timer">
+										<div class="badge-pill">HOT</div>
+										<div class="countdown" data-expire=""></div>
+									</div>
+								</div>
+								<div style="text-align:right">
+									<div style="font-weight:900;color:var(--accent)">KES 412.79 <small class="muted"
+											style="display:block;text-decoration:line-through;color:rgba(255,255,255,.6);font-weight:600">KES
+											515.99</small></div>
+									<button class="add-cart-btn" type="button" data-name="Organic Coffee Beans"
+										data-price="412.79"
+										data-img="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80"
+										style="margin-top:8px;padding:.55rem .85rem;border-radius:10px;background:linear-gradient(90deg,var(--accent),#ff9b5a);border:0;color:#02131a"><i
+											class="fas fa-cart-plus"></i></button>
+								</div>
+							</div>
+						</div>
+
+						<svg aria-hidden="true"
+							style="position:absolute;left:-8%;top:-12%;opacity:.12;width:320px;transform:rotate(6deg)"
+							viewBox="0 0 200 200">
+							<path fill="#00d1ff"
+								d="M43.8,-68.1C56.9,-62.6,67.5,-52.3,74.9,-39.6C82.3,-26.9,86.6,-11.9,84.2,1.7C81.7,15.3,72.5,27.3,62.2,37.6C51.8,47.9,40.4,56.7,27.6,62.5C14.8,68.4,0.6,71.2,-12.6,72.1C-25.8,73,-51.6,71.9,-62,61.3C-72.4,50.6,-67.3,30.6,-66.6,11.4C-65.9,-7.8,-69.6,-26.9,-63.8,-39.1C-57.9,-51.3,-42.5,-56.7,-27.5,-61.6C-12.5,-66.6,1.7,-70.9,16.3,-72.1C30.8,-73.3,45.8,-71.6,43.8,-68.1Z"
+								transform="translate(100 100)"></path>
+						</svg>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Flash offers (add-to-cart enabled, timers) -->
+		<section class="container reveal" style="margin-top:2rem">
+			<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+				<h2 style="margin:0">Flash Offers <small class="muted" style="font-weight:600">Limited time</small></h2>
+				<div class="muted">Hurry — deals refresh daily</div>
+			</div>
+
+			<div class="flash-grid">
+				<div class="product-card futuristic card" data-name="Kenyan Roast" data-price="299.99"
+					data-img="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80">
+					<div style="position:relative">
+						<span class="offer-badge">HOT</span>
+						<img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80"
+							style="width:100%;height:160px;object-fit:cover;border-radius:8px">
+					</div>
+					<div style="padding:12px">
+						<h3 style="margin:.4rem 0 .6rem">Kenyan Roast</h3>
+						<div class="muted">Bright & fruity • 200g</div>
+						<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+							<div style="font-weight:800">KES 299.99</div>
+							<div style="display:flex;flex-direction:column;align-items:flex-end">
+								<div class="countdown" data-expire=""></div>
+								<button class="add-cart-btn" data-name="Kenyan Roast" data-price="299.99"
+									data-img="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80"
+									style="margin-top:8px;padding:.45rem .6rem;border-radius:8px;background:var(--nav);color:#fff;border:0"><i
+										class="fas fa-cart-plus"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="product-card futuristic card" data-name="Spiced Tea" data-price="169.99"
+					data-img="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80">
+					<img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80"
+						style="width:100%;height:160px;object-fit:cover;border-radius:8px">
+					<div style="padding:12px">
+						<h3 style="margin:.4rem 0 .6rem">Spiced Tea</h3>
+						<div class="muted">Aromatic blend</div>
+						<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+							<div style="font-weight:800">KES 169.99</div>
+							<div style="display:flex;flex-direction:column;align-items:flex-end">
+								<div class="countdown" data-expire=""></div>
+								<button class="add-cart-btn" data-name="Spiced Tea" data-price="169.99"
+									data-img="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80"
+									style="margin-top:8px;padding:.45rem .6rem;border-radius:8px;background:var(--nav);color:#fff;border:0"><i
+										class="fas fa-cart-plus"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="product-card futuristic card" data-name="Woven Basket" data-price="799.99"
+					data-img="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80">
+					<img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80"
+						style="width:100%;height:160px;object-fit:cover;border-radius:8px">
+					<div style="padding:12px">
+						<h3 style="margin:.4rem 0 .6rem">Woven Basket</h3>
+						<div class="muted">Handmade • eco fibres</div>
+						<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+							<div style="font-weight:800">KES 799.99</div>
+							<div style="display:flex;flex-direction:column;align-items:flex-end">
+								<div class="countdown" data-expire=""></div>
+								<button class="add-cart-btn" data-name="Woven Basket" data-price="799.99"
+									data-img="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80"
+									style="margin-top:8px;padding:.45rem .6rem;border-radius:8px;background:var(--nav);color:#fff;border:0"><i
+										class="fas fa-cart-plus"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Trending (horizontal scroller) with add-to-cart -->
+		<section class="container reveal" style="margin-top:2rem">
+			<h2 style="margin:0 0 1rem">Trending now</h2>
+			<div class="h-scroll" aria-label="Trending products">
+				<div class="card product-card reveal" style="padding:12px" data-name="Ceramic Mug" data-price="249.99"
+					data-img="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80">
+					<img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80"
+						style="width:100%;height:140px;object-fit:cover;border-radius:8px">
+					<div style="padding-top:8px;display:flex;justify-content:space-between;align-items:center">
+						<div><strong>Ceramic Mug</strong>
+							<div class="muted">KES 249.99</div>
+						</div><button class="add-cart-btn" data-name="Ceramic Mug" data-price="249.99"
+							data-img="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80"
+							style="background:var(--nav);color:#fff;border-radius:8px;padding:.5rem .6rem;border:0"><i
+								class="fas fa-cart-plus"></i></button>
+					</div>
+				</div>
+
+				<div class="card product-card reveal" style="padding:12px" data-name="Handmade Necklace"
+					data-price="420.00"
+					data-img="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80">
+					<img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80"
+						style="width:100%;height:140px;object-fit:cover;border-radius:8px">
+					<div style="padding-top:8px;display:flex;justify-content:space-between;align-items:center">
+						<div><strong>Handmade Necklace</strong>
+							<div class="muted">KES 420.00</div>
+						</div><button class="add-cart-btn" data-name="Handmade Necklace" data-price="420.00"
+							data-img="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80"
+							style="background:var(--nav);color:#fff;border-radius:8px;padding:.5rem .6rem;border:0"><i
+								class="fas fa-cart-plus"></i></button>
+					</div>
+				</div>
+
+				<div class="card product-card reveal" style="padding:12px" data-name="Cold Brew Kit"
+					data-price="1150.00"
+					data-img="https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=600&q=80">
+					<img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=600&q=80"
+						style="width:100%;height:140px;object-fit:cover;border-radius:8px">
+					<div style="padding-top:8px;display:flex;justify-content:space-between;align-items:center">
+						<div><strong>Cold Brew Kit</strong>
+							<div class="muted">KES 1,150.00</div>
+						</div><button class="add-cart-btn" data-name="Cold Brew Kit" data-price="1150.00"
+							data-img="https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=600&q=80"
+							style="background:var(--nav);color:#fff;border-radius:8px;padding:.5rem .6rem;border:0"><i
+								class="fas fa-cart-plus"></i></button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<style>
+			/* Editor's Picks — refreshed design & animations */
+			#editor-track {
+				display: flex;
+				gap: 14px;
+				padding: 10px 4px;
+				scroll-snap-type: x mandatory;
+				overflow-x: auto;
+				-webkit-overflow-scrolling: touch;
+			}
+
+			#editor-track .carousel-item {
+				min-width: 260px;
+				scroll-snap-align: center;
+				border-radius: 12px;
+				background: linear-gradient(180deg, #fff, #fbfdff);
+				padding: 10px;
+				transition: box-shadow .36s, transform .36s;
+				will-change: transform, box-shadow;
+				transform-origin: center;
+			}
+
+			#editor-track .carousel-item img {
+				width: 100%;
+				height: 140px;
+				object-fit: cover;
+				border-radius: 8px;
+				transition: transform .6s cubic-bezier(.2, .9, .2, 1);
+				display: block;
+			}
+
+			#editor-track .carousel-item .title-row {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				gap: 12px;
+				margin-top: 8px;
+			}
+
+			#editor-track .carousel-item .title-row strong {
+				display: block;
+				font-size: 0.98rem;
+			}
+
+			#editor-track .carousel-item .muted {
+				font-size: 0.9rem;
+				color: var(--muted);
+				margin-top: 4px;
+			}
+
+			/* active / center item emphasis */
+			#editor-track .carousel-item.active {
+				transform: translateY(-10px) scale(1.06);
+				box-shadow: 0 32px 80px rgba(6, 20, 30, 0.16);
+				z-index: 2;
+			}
+
+			#editor-track .carousel-item.active img {
+				transform: scale(1.06) rotate(-.6deg);
+				filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.18));
+			}
+
+			/* subtle floating animation for non-active items */
+			#editor-track .carousel-item {
+				animation: floaty 6s ease-in-out infinite;
+			}
+
+			#editor-track .carousel-item:nth-child(odd) {
+				animation-delay: .2s;
+			}
+
+			@keyframes floaty {
+				0% {
+					transform: translateY(0)
+				}
+
+				50% {
+					transform: translateY(-4px)
+				}
+
+				100% {
+					transform: translateY(0)
+				}
+			}
+
+			/* navigation buttons (injected) */
+			.editor-nav-wrap {
+				display: flex;
+				gap: 8px;
+				justify-content: flex-end;
+				margin-bottom: 8px;
+				align-items: center
+			}
+
+			.editor-nav-wrap button {
+				background: rgba(2, 19, 24, 0.06);
+				border: 0;
+				color: var(--nav);
+				padding: 8px 10px;
+				border-radius: 8px;
+				cursor: pointer;
+				font-size: 1rem;
+				transition: transform .16s, background .16s;
+			}
+
+			.editor-nav-wrap button:hover {
+				transform: translateY(-4px);
+				background: rgba(2, 19, 24, 0.09)
+			}
+
+			.editor-nav-wrap button:active {
+				transform: translateY(-1px);
+			}
+
+			/* make horizontal scroller hide default scrollbar gracefully */
+			#editor-track::-webkit-scrollbar {
+				height: 8px
+			}
+
+			#editor-track::-webkit-scrollbar-thumb {
+				background: rgba(0, 0, 0, 0.08);
+				border-radius: 8px
+			}
+
+			@media(max-width:700px) {
+				#editor-track .carousel-item {
+					min-width: 200px
+				}
+			}
+		</style>
+
+		<script>
+			(function () {
+				const track = document.getElementById('editor-track');
+				if (!track) return;
+
+				// Create compact nav and inject at top of the container
+				const container = track.closest('.container') || track.parentElement;
+				const nav = document.createElement('div');
+				nav.className = 'editor-nav-wrap';
+				nav.innerHTML = '<div style="font-weight:700">Editor\'s Picks</div><div style="flex:1"></div><button class="editor-nav-left" aria-label="Previous"><i class="fas fa-chevron-left"></i></button><button class="editor-nav-right" aria-label="Next"><i class="fas fa-chevron-right"></i></button>';
+				container.insertBefore(nav, container.firstChild);
+
+				const left = nav.querySelector('.editor-nav-left');
+				const right = nav.querySelector('.editor-nav-right');
+				const items = () => Array.from(track.querySelectorAll('.carousel-item'));
+
+				// Center-detection to add 'active' class for emphasis
+				function updateActive() {
+					const nodes = items();
+					if (!nodes.length) return;
+					const rect = track.getBoundingClientRect();
+					const centerX = rect.left + rect.width / 2;
+					let closest = null, best = Infinity;
+					nodes.forEach(n => {
+						const r = n.getBoundingClientRect();
+						const itemCenter = r.left + r.width / 2;
+						const dist = Math.abs(centerX - itemCenter);
+						if (dist < best) { best = dist; closest = n; }
+						n.classList.remove('active');
+					});
+					if (closest) closest.classList.add('active');
+				}
+
+				// Smooth scroll helpers
+				function scrollByAmount(amount) {
+					track.scrollBy({ left: amount, behavior: 'smooth' });
+				}
+				left.addEventListener('click', () => scrollByAmount(-Math.round(track.clientWidth * 0.6)));
+				right.addEventListener('click', () => scrollByAmount(Math.round(track.clientWidth * 0.6)));
+
+				// Auto-play (pauses on hover)
+				let autoId = null;
+				function startAuto() { if (autoId) clearInterval(autoId); autoId = setInterval(() => { scrollByAmount(Math.round(track.clientWidth * 0.64)); }, 3800); }
+				function stopAuto() { if (autoId) clearInterval(autoId); autoId = null; }
+				track.addEventListener('mouseenter', stopAuto);
+				track.addEventListener('mouseleave', startAuto);
+
+				// Mouse tilt for each item (small 3D parallax)
+				function bindTilt() {
+					items().forEach(item => {
+						item.addEventListener('mousemove', (e) => {
+							const r = item.getBoundingClientRect();
+							const dx = ((e.clientX - r.left) / r.width - 0.5) * 2; // -1..1
+							const dy = ((e.clientY - r.top) / r.height - 0.5) * 2;
+							const tiltX = (-dy * 4).toFixed(2);
+							const tiltY = (dx * 6).toFixed(2);
+							// keep 'active' transform (scale/translate) by reading class
+							const base = item.classList.contains('active') ? 'translateY(-10px) scale(1.06)' : 'translateY(0) scale(1)';
+							item.style.transform = `perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) ${base}`;
+						});
+						item.addEventListener('mouseleave', () => {
+							item.style.transform = '';
+						});
+					});
+				}
+
+				// Wire scroll -> active update (throttle via rAF)
+				let raf = 0;
+				track.addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(updateActive); });
+
+				// initial setup
+				updateActive();
+				bindTilt();
+				startAuto();
+
+				// Re-bind if DOM changes (simple mutation observer to catch dynamic content)
+				const mo = new MutationObserver(() => { bindTilt(); updateActive(); });
+				mo.observe(track, { childList: true, subtree: true });
+
+				// keyboard accessibility
+				track.setAttribute('tabindex', '0');
+				track.addEventListener('keydown', (e) => {
+					if (e.key === 'ArrowRight') { e.preventDefault(); scrollByAmount(280); }
+					if (e.key === 'ArrowLeft') { e.preventDefault(); scrollByAmount(-280); }
+				});
+
+			})();
+		</script>
+		<section class="container reveal" style="margin-top:2rem">
+			<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+				<h2 style="margin:0">Editor's Picks</h2>
+				<div class="muted">Curated by our team</div>
+			</div>
+			<div class="carousel">
+				<div class="carousel-track" id="editor-track">
+					<div class="carousel-item" style="padding:12px" data-name="Single Origin Set" data-price="950.00"
+						data-img="">
+						<img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=800&q=80"
+							style="width:100%;height:140px;object-fit:cover;border-radius:8px">
+						<div style="padding:10px;display:flex;justify-content:space-between;align-items:center">
+							<strong>Single Origin Set</strong><button class="add-cart-btn" data-name="Single Origin Set"
+								data-price="950.00"
+								style="background:var(--nav);color:#fff;border-radius:8px;padding:.5rem .6rem;border:0"><i
+									class="fas fa-cart-plus"></i></button></div>
+					</div>
+					<div class="carousel-item" style="padding:12px" data-name="Artisan Basket Set" data-price="1800.00">
+						<img src="https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&w=800&q=80"
+							style="width:100%;height:140px;object-fit:cover;border-radius:8px">
+						<div style="padding:10px;display:flex;justify-content:space-between;align-items:center">
+							<strong>Artisan Basket Set</strong><button class="add-cart-btn"
+								data-name="Artisan Basket Set" data-price="1800.00"
+								style="background:var(--nav);color:#fff;border-radius:8px;padding:.5rem .6rem;border:0"><i
+									class="fas fa-cart-plus"></i></button></div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Live drops (timer + ribbon) -->
+		<section class="container reveal" style="margin-top:2rem">
+
+			<style>
+				.live-section {display:flex;align-items:center;gap:16px;justify-content:space-between;width:100%}
+				.live-left {display:flex;align-items:center;gap:14px}
+				.live-ribbon {
+					background:linear-gradient(90deg,#ff7a59,#ffd36b);
+					color:#081018;
+					padding:10px 14px;
+					border-radius:999px;
+					font-weight:900;
+					display:flex;
+					align-items:center;
+					gap:10px;
+					box-shadow:0 12px 30px rgba(255,122,89,0.14);
+					transform:translateZ(0);
+				}
+				.live-dot{width:10px;height:10px;background:#081018;border-radius:50%;box-shadow:0 0 10px rgba(255,122,89,0.28);animation:pulse 1.6s infinite}
+				@keyframes pulse{0%{transform:scale(.9);opacity:.9}50%{transform:scale(1.25);opacity:1}100%{transform:scale(.9);opacity:.9}}
+				.drop-badge{
+					display:inline-block;
+					background:linear-gradient(90deg,#02131a,#064055);
+					color:#fff;
+					padding:8px 14px;
+					border-radius:999px;
+					font-weight:900;
+					font-family:monospace;
+					margin-left:8px;
+					box-shadow:0 12px 40px rgba(2,19,24,.32);
+					min-width:120px;
+					text-align:center;
+				}
+				.live-cta{display:flex;gap:8px;align-items:center}
+				.notify-btn{
+					background:linear-gradient(90deg,var(--accent),#ff9b5a);
+					color:#02131a;
+					padding:.6rem .9rem;
+					border-radius:10px;
+					border:0;
+					font-weight:800;
+					cursor:pointer;
+				}
+				.secondary-btn{
+					background:transparent;
+					border:1px solid rgba(36,49,58,0.08);
+					padding:.55rem .8rem;
+					border-radius:10px;
+					color:var(--nav);
+					text-decoration:none;
+				}
+				.live-subtext{color:rgba(2,19,24,.6);font-weight:700;font-size:.95rem}
+				@media(max-width:760px){ .live-section{flex-direction:column;align-items:flex-start;gap:10px} .live-cta{width:100%;justify-content:space-between} }
+			</style>
+
+			<div class="live-section" role="region" aria-label="Live drops">
+				<div class="live-left" style="gap:12px">
+					<div class="live-ribbon" aria-hidden="true"><i class="fas fa-bolt" aria-hidden="true"></i> Live drops <span class="live-dot" aria-hidden="true"></span></div>
+					<div style="display:flex;flex-direction:column">
+						<div class="live-subtext">Exclusive, timed releases — very limited pieces</div>
+						<div id="next-drop" style="margin-top:6px;font-size:0.95rem">Next drop in <span id="drop-count" class="drop-badge">--:--:--</span></div>
+					</div>
+				</div>
+
+				<div class="live-cta" aria-hidden="false">
+					<button class="notify-btn" onclick="showToast('You will be notified (demo)')" aria-label="Notify me about next drop">Notify me</button>
+					<a class="secondary-btn" href="product.html" aria-label="Shop live now">Shop live</a>
+				</div>
+			</div>
+			</div>
+
+			<div class="h-scroll" aria-label="Live drops">
+				<div class="card carousel-item product-card" style="padding:12px" data-name="Collector's Roast"
+					data-price="1250.00">
+					<img src="images/1200px-M-PESA_LOGO-01.svg.png"
+						style="width:100%;height:140px;object-fit:cover;border-radius:8px">
+					<div style="padding-top:8px;display:flex;justify-content:space-between;align-items:center">
+						<div><strong>Collector's Roast</strong>
+							<div class="muted">Limited • 50 packs</div>
+						</div><button class="add-cart-btn" data-name="Collector's Roast" data-price="1250.00"
+							style="background:linear-gradient(90deg,var(--accent),#ff9b5a);color:#02131a;border-radius:8px;padding:.5rem .6rem;border:0"><i
+								class="fas fa-cart-plus"></i></button>
+					</div>
+				</div>
+				<div class="card carousel-item product-card" style="padding:12px" data-name="Night Brew Set"
+					data-price="2200.00">
+					<img src="images/"
+						style="width:100%;height:140px;object-fit:cover;border-radius:8px">
+					<div style="padding-top:8px;display:flex;justify-content:space-between;align-items:center">
+						<div><strong>Night Brew Set</strong>
+							<div class="muted">Includes filter</div>
+						</div><button class="add-cart-btn" data-name="Night Brew Set" data-price="2200.00"
+							style="background:linear-gradient(90deg,var(--accent),#ff9b5a);color:#02131a;border-radius:8px;padding:.5rem .6rem;border:0"><i
+								class="fas fa-cart-plus"></i></button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Additional sections: Collections & Explore -->
+		<section class="container reveal blur-bg"
+			style="margin-top:2rem; background-image:url('https://images.unsplash.com/photo-1503342452485-86f3b8a1f3b8?auto=format&fit=crop&w=1600&q=80')">
+			<div class="blur-content">
+				<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+					<h2 style="margin:0">Collections</h2>
+					<div class="muted">Handpicked categories</div>
+				</div>
+				<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+					<div
+						style="padding:14px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)">
+						<img src="https://images.unsplash.com/photo-1516685018646-549d4ff8d8b2?auto=format&fit=crop&w=800&q=80"
+							style="width:100%;height:120px;object-fit:cover;border-radius:8px">
+						<div style="padding-top:8px"><strong>Coffee</strong>
+							<div class="muted">Roasts & kits</div>
+						</div>
+					</div>
+					<div
+						style="padding:14px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)">
+						<img src="https://images.unsplash.com/photo-1496317899792-9d7dbcd928a1?auto=format&fit=crop&w=800&q=80"
+							style="width:100%;height:120px;object-fit:cover;border-radius:8px">
+						<div style="padding-top:8px"><strong>Tea</strong>
+							<div class="muted">Blends & spices</div>
+						</div>
+					</div>
+					<div
+						style="padding:14px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)">
+						<img src="https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=800&q=80"
+							style="width:100%;height:120px;object-fit:cover;border-radius:8px">
+						<div style="padding-top:8px"><strong>Home & Gift</strong>
+							<div class="muted">Baskets & decor</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<style>
+			@keyframes float {
+				0% {
+					transform: translateY(0)
+				}
+
+				50% {
+					transform: translateY(-6px)
+				}
+
+				100% {
+					transform: translateY(0)
+				}
+			}
+
+			@keyframes cardIn {
+				from {
+					opacity: 0;
+					transform: translateY(10px)
+				}
+
+				to {
+					opacity: 1;
+					transform: none
+				}
+			}
+
+			.product-card.futuristic:hover img {
+				transform: scale(1.04) rotate(-.6deg);
+				filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6));
+			}
+		</style>
+
+		<script>
+			// reveal on scroll
+			(function () {
+				const reveals = document.querySelectorAll('.reveal');
+				const io = new IntersectionObserver((entries) => {
+					entries.forEach(e => {
+						if (e.isIntersecting) {
+							e.target.classList.add('show');
+							io.unobserve(e.target);
+						}
+					});
+				}, { threshold: 0.12 });
+				reveals.forEach(r => io.observe(r));
+			})();
+
+			// countdown timers (for each .countdown)
+			(function () {
+				const now = Date.now();
+				const timers = document.querySelectorAll('.countdown');
+				timers.forEach((el, i) => {
+					let expire = el.getAttribute('data-expire');
+					if (!expire) {
+						const offsets = [6, 12, 24, 48, 72, 4];
+						const hours = offsets[i % offsets.length];
+						expire = new Date(now + hours * 3600 * 1000).toISOString();
+						el.setAttribute('data-expire', expire);
+					}
+				});
+
+				function update() {
+					const nodes = document.querySelectorAll('.countdown');
+					nodes.forEach(el => {
+						const exp = new Date(el.getAttribute('data-expire'));
+						const diff = exp - Date.now();
+						if (isNaN(diff) || diff <= 0) { el.textContent = 'Ended'; el.style.color = '#999'; return; }
+						const hrs = Math.floor(diff / 3600000);
+						const mins = Math.floor((diff % 3600000) / 60000);
+						const secs = Math.floor((diff % 60000) / 1000);
+						el.textContent = `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+					});
+				}
+				update(); setInterval(update, 1000);
+			})();
+
+			// Live drop counter
+			(function () {
+				const dropEl = document.getElementById('drop-count');
+				const next = new Date(Date.now() + 3 * 3600 * 1000); // demo next drop in 3h
+				function tick() {
+					const diff = next - Date.now();
+					if (diff <= 0) { dropEl.textContent = '00:00:00'; return; }
+					const h = Math.floor(diff / 3600000), m = Math.floor((diff % 3600000) / 60000), s = Math.floor((diff % 60000) / 1000);
+					dropEl.textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+				}
+				tick(); setInterval(tick, 1000);
+			})();
+
+			// carousel auto-scroll (editor picks)
+			(function () {
+				const track = document.getElementById('editor-track');
+				if (!track) return;
+				let pos = 0;
+				setInterval(() => {
+					pos += 292;
+					if (pos >= track.scrollWidth - track.clientWidth) pos = 0;
+					track.scrollTo({ left: pos, behavior: 'smooth' });
+				}, 3400);
+			})();
+
+			// parallax mousemove for hero
+			(function () {
+				const hero = document.querySelector('.hero[data-parallax="true"]');
+				if (!hero) return;
+				hero.addEventListener('mousemove', (e) => {
+					const layer = hero.querySelector('.parallax-layer');
+					const rect = hero.getBoundingClientRect();
+					const dx = (e.clientX - rect.left) / rect.width - 0.5;
+					const dy = (e.clientY - rect.top) / rect.height - 0.5;
+					if (layer) layer.style.transform = `translate3d(${dx * 12}px, ${dy * 12}px, 0) scale(1.04)`;
+				});
+				hero.addEventListener('mouseleave', () => {
+					const layer = hero.querySelector('.parallax-layer');
+					if (layer) layer.style.transform = 'translate3d(0,0,0) scale(1.04)';
+				});
+			})();
+
+			// global add-to-cart wiring (covers all new cards)
+			(function () {
+				function readCart() { try { return JSON.parse(localStorage.getItem('cart') || '[]') } catch (e) { return [] } }
+				function writeCart(c) { localStorage.setItem('cart', JSON.stringify(c)); window.dispatchEvent(new Event('cart:updated')) }
+				function showToast(msg, t = 2000) {
+					const el = document.getElementById('toast'); if (!el) return;
+					el.textContent = msg; el.classList.add('show'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), t);
+				}
+				document.body.addEventListener('click', function (e) {
+					const btn = e.target.closest('.add-cart-btn');
+					if (!btn) return;
+					const name = btn.dataset.name || btn.closest('.product-card')?.dataset?.name || btn.closest('.carousel-item')?.dataset?.name || btn.closest('.hero-card')?.querySelector('strong')?.innerText || 'Product';
+					const price = parseFloat(btn.dataset.price || btn.closest('.product-card')?.dataset?.price || '0') || 0;
+					const img = btn.dataset.img || btn.closest('.product-card')?.dataset?.img || btn.closest('img')?.src || '';
+					const cart = readCart();
+					const existing = cart.find(i => i.name === name);
+					if (existing) existing.quantity = (parseInt(existing.quantity, 10) || 1) + 1;
+					else cart.push({ name, price: price.toFixed(2), img, quantity: 1 });
+					writeCart(cart);
+					showToast(`Added "${name}" to cart`);
+				});
+				// keep cart count updated
+				window.addEventListener('cart:updated', function () { const evt = new Event('update-cart'); window.dispatchEvent(evt); });
+				window.addEventListener('update-cart', () => {
+					const cnt = document.getElementById('cart-count'); if (!cnt) return;
+					const cart = readCart(); const total = cart.reduce((s, i) => s + (parseInt(i.quantity || 1, 10) || 1), 0);
+					if (total > 0) { cnt.style.display = 'inline-block'; cnt.textContent = total; } else { cnt.style.display = 'none' }
+				});
+				// initial update
+				window.dispatchEvent(new Event('update-cart'));
+			})();
+
+			// FAQ toggle
+			(function () {
+				document.querySelectorAll('.faq-item').forEach(item => {
+					item.addEventListener('click', () => {
+						item.classList.toggle('open');
+						const plus = item.querySelector(':scope > div > div:last-child');
+						if (plus) plus.textContent = item.classList.contains('open') ? '−' : '+';
+					});
+				});
+			})();
+
+			// newsletter forms
+			(function () {
+				['newsletter-form-3', 'newsletter-form-2'].forEach(id => {
+					const f = document.getElementById(id);
+					if (!f) return;
+					f.addEventListener('submit', function (e) { e.preventDefault(); const el = this.querySelector('input[type="email"]'); if (!el.value) return; const msg = document.getElementById((id === 'newsletter-form-3') ? 'newsletter-msg-3' : 'newsletter-msg-2'); if (msg) { msg.textContent = 'Thanks — subscribed!'; msg.style.color = '#27ae60' } this.reset(); });
+				});
+			})();
+		</script>
+	</main>
+
+	<footer>
+		<div class="container">
+			&copy; 2025 Marzley e-commerce. All rights reserved.
+		</div>
+	</footer>
+
+	<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+	<script>
+		// Navigation toggle (keeps menu visible until user toggles)
+		(function () {
+			const toggle = document.querySelector('.nav-toggle');
+			const links = document.querySelector('.nav-links');
+			if (!toggle || !links) return;
+			toggle.addEventListener('click', () => links.classList.toggle('show'));
+			// close on resize >900
+			window.addEventListener('resize', () => { if (window.innerWidth > 900) links.classList.remove('show') });
+		})();
+
+		// Cart helpers
+		function readCart() { try { return JSON.parse(localStorage.getItem('cart') || '[]') } catch (e) { return [] } }
+		function writeCart(cart) { localStorage.setItem('cart', JSON.stringify(cart)); updateCartCount(); }
+		function updateCartCount() {
+			const cntEl = document.getElementById('cart-count');
+			const cart = readCart();
+			const totalQty = cart.reduce((s, i) => s + (parseInt(i.quantity || 1) || 1), 0);
+			if (!cntEl) return;
+			if (totalQty > 0) { cntEl.style.display = 'inline-block'; cntEl.textContent = totalQty; }
+			else { cntEl.style.display = 'none'; cntEl.textContent = '0'; }
+		}
+
+		// Toast
+		function showToast(msg, timeout = 2400) {
+			const t = document.getElementById('toast');
+			t.textContent = msg;
+			t.classList.add('show');
+			clearTimeout(t._timer);
+			t._timer = setTimeout(() => t.classList.remove('show'), timeout);
+		}
+
+		// Add to cart button logic
+		(function () {
+			updateCartCount();
+			document.querySelectorAll('.product-card').forEach(card => {
+				const btn = card.querySelector('.add-cart-btn');
+				if (!btn) return;
+				btn.addEventListener('click', () => {
+					const name = card.dataset.name || card.querySelector('h3')?.innerText || 'Product';
+					const price = parseFloat(card.dataset.price || card.querySelector('.price')?.innerText.replace(/[^\d.]/g, '') || '0') || 0;
+					const img = card.dataset.img || card.querySelector('img')?.src || '';
+					const cart = readCart();
+					const existing = cart.find(i => i.name === name);
+					if (existing) {
+						existing.quantity = (parseInt(existing.quantity, 10) || 1) + 1;
+					} else {
+						cart.push({ name: name, price: price.toFixed(2), img: img, quantity: 1 });
+					}
+					writeCart(cart);
+					showToast('Added "' + name + '" to cart');
+				});
+			});
+		})();
+
+		// Newsletter form basic behaviour
+		document.getElementById('newsletter-form')?.addEventListener('submit', function (e) {
+			e.preventDefault();
+			const email = document.getElementById('newsletter-email').value.trim();
+			if (!email) return;
+			document.getElementById('newsletter-msg').textContent = 'Thank you for subscribing!';
+			document.getElementById('newsletter-msg').style.color = '#27ae60';
+			this.reset();
+		});
+	</script>
+</body>
+
+</html>
